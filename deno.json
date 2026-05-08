@@ -1,0 +1,6 @@
+{
+  "allowScripts": {
+    "allow": [],
+    "deny": ["npm:msedge-tts@2.0.5"]
+  }
+}
