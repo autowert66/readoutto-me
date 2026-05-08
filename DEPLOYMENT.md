@@ -17,6 +17,11 @@ rc-update add docker default
 rc-update add caddy default
 service docker start
 service caddy start
+
+# use chrony for proper time synchronization on alpine, otherwise it might cause 403 errors
+apk add chrony
+rc-service chronyd start
+rc-update add chronyd
 ```
 
 </details>
