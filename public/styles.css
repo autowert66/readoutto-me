@@ -1,0 +1,25 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  font-family: sans-serif;
+  background: #f7e9d9;
+  color: #303030;
+}
+
+h1 {
+  font-size: 3rem;
+  margin-bottom: 0;
+}
+
+.subtle {
+  color: #aaa;
+  /* by default selecting the subtle indicators is disabled, unless they have the class .selectable
+     this means the copied title is the valid domain */
+  user-select: none;
+}
+
+.subtle.selectable {
+  user-select: auto;
+}
