@@ -1,0 +1,14 @@
+{
+  "name": "readoutto-me",
+  "version": "0.0.1",
+  "description": "Web application to read text out online",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "gabriel",
+  "license": "WTFPL",
+  "packageManager": "pnpm@10.33.2"
+}
