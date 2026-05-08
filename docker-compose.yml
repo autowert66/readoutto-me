@@ -1,0 +1,7 @@
+name: readoutto-me
+services:
+  web:
+    build: .
+    ports:
+      - "127.0.0.1:8023:8080"
+

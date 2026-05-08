@@ -10,7 +10,7 @@ Execute in the project folder:
 
 ```bash
 deno install
-deno run --allow-net --allow-read=public src/server.ts
+deno task start
 ```
 
 The application will be running on [localhost:8080](http://localhost:8080/)
