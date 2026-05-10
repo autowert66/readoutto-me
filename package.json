@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "deno run --allow-net --allow-read=public --allow-env src/server.ts",
+    "dev": "deno run --watch --allow-net --allow-read=public --allow-env src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
