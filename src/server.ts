@@ -6,6 +6,7 @@ import { Readable } from "node:stream";
 
 const app = new Hono();
 app.use('/*', serveStatic({ root: './public' }));
+app.use('/*', serveStatic({ root: './src/web' }));
 
 app.use('/helloworld.webm', async () => {
   const tts = new MsEdgeTTS();
