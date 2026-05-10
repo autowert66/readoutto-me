@@ -8,11 +8,20 @@ const app = new Hono();
 app.use('/*', serveStatic({ root: './public' }));
 app.use('/*', serveStatic({ root: './src/web' }));
 
+// cache voices on successfull promise, instantly return on subsequent requests
+let _voices: Awaited<ReturnType<MsEdgeTTS['getVoices']>> | null = null;
+async function getVoices(tts: MsEdgeTTS) {
+  if (_voices) return _voices;
+
+  _voices = await tts.getVoices();
+  return _voices;
+};
+
 app.use('/helloworld.webm', async () => {
   const tts = new MsEdgeTTS();
 
   // select a random en-US- voice, for the demo to be more useful
-  const voices = await tts.getVoices();
+  const voices = await getVoices(tts);
   const enVoices = voices.filter((voice) => /^en-us-/i.test(voice.ShortName));
   const voice = enVoices[Math.floor(Math.random() * enVoices.length)];
 
