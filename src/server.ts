@@ -2,26 +2,19 @@ import { Hono } from 'hono';
 import { serveStatic } from 'hono/deno';
 import { MsEdgeTTS, OUTPUT_FORMAT } from 'msedge-tts';
 
-import { Readable } from "node:stream";
+import { Readable } from 'node:stream';
+
+import { getVoices } from "./utils/getVoices.ts";
 
 const app = new Hono();
 app.use('/*', serveStatic({ root: './public' }));
 app.use('/*', serveStatic({ root: './src/web' }));
 
-// cache voices on successfull promise, instantly return on subsequent requests
-let _voices: Awaited<ReturnType<MsEdgeTTS['getVoices']>> | null = null;
-async function getVoices(tts: MsEdgeTTS) {
-  if (_voices) return _voices;
-
-  _voices = await tts.getVoices();
-  return _voices;
-};
-
 app.use('/helloworld.webm', async () => {
   const tts = new MsEdgeTTS();
 
   // select a random en-US- voice, for the demo to be more useful
-  const voices = await getVoices(tts);
+  const voices = await getVoices();
   const enVoices = voices.filter((voice) => /^en-us-/i.test(voice.ShortName));
   const voice = enVoices[Math.floor(Math.random() * enVoices.length)];
 
