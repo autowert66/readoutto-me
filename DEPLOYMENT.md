@@ -56,6 +56,8 @@ Install caddy and the corresponding service from your package manager and modify
 ```Caddyfile
 readoutto.me {
   reverse_proxy localhost:8023
+  encode
+  header -Via
 }
 ```
 
