@@ -8,7 +8,7 @@ import { getVoices } from "./utils/getVoices.ts";
 
 const app = new Hono();
 app.use('/*', serveStatic({ root: './public' }));
-app.use('/*', serveStatic({ root: './src/web' }));
+app.use('/*', serveStatic({ root: './web' }));
 
 app.get('/api/voices', async (c) => {
   const voices = await getVoices();
