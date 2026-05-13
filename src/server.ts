@@ -10,7 +10,12 @@ const app = new Hono();
 app.use('/*', serveStatic({ root: './public' }));
 app.use('/*', serveStatic({ root: './src/web' }));
 
-app.use('/helloworld.webm', async () => {
+app.get('/api/voices', async (c) => {
+  const voices = await getVoices();
+  return c.json(voices);
+});
+
+app.get('/helloworld.webm', async () => {
   const tts = new MsEdgeTTS();
 
   // select a random en-US- voice, for the demo to be more useful
