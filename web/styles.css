@@ -88,6 +88,10 @@ body {
   background: var(--background);
 }
 
+h1 {
+  font-size: 3rem;
+}
+
 .subtle {
   color: #aaa;
   /* by default selecting the subtle indicators is disabled, unless they have the class .selectable
@@ -97,4 +101,10 @@ body {
 
 .subtle.selectable {
   user-select: auto;
+}
+
+@media screen and (min-width: 768px) {
+  h1 {
+    font-size: 4rem;
+  }
 }

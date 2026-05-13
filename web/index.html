@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,10 +10,47 @@
   <link rel="stylesheet" href="styles.css">
   <script src="main.js" type="module" defer></script>
 </head>
+
 <body>
   <h1>Read<span class="subtle">·</span>Out<span class="subtle">·</span>To<span class="subtle selectable">.</span>me</h1>
   <p>Read text out online</p>
 
-  <button id="playAudio">Play Audio</button>
+
+  <main class="responsive">
+    <div class="field label border">
+      <textarea></textarea>
+      <label>Text to read</label>
+    </div>
+
+    <fieldset>
+      <legend>
+        <i>settings</i>
+        <span>Options</span>
+      </legend>
+      <div class="field border prefix suffix label">
+        <i>translate</i>
+        <select>
+          <option selected>English (United States)</option>
+        </select>
+        <label>Language</label>
+        <i>arrow_drop_down</i>
+      </div>
+      <div class="field border prefix suffix label">
+        <i>lips</i>
+        <select>
+          <option selected>[RANDOM] Neutral</option>
+        </select>
+        <label>Speaker</label>
+        <i>arrow_drop_down</i>
+      </div>
+    </fieldset>
+    <br>
+    <button id="playAudio" class="responsive border vertical">
+      <i>wand_stars</i>
+      <span>Play Audio</span>
+    </button>
+    <br>
+  </main>
 </body>
+
 </html>
