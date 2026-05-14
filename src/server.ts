@@ -15,7 +15,7 @@ app.get('/api/voices', async (c) => {
   return c.json(voices);
 });
 
-app.get('/helloworld.webm', async () => {
+app.get('/helloworld.webm', async (c) => {
   const tts = new MsEdgeTTS();
 
   // select a random en-US- voice, for the demo to be more useful
@@ -25,6 +25,12 @@ app.get('/helloworld.webm', async () => {
 
   await tts.setMetadata(voice.ShortName, OUTPUT_FORMAT.WEBM_24KHZ_16BIT_MONO_OPUS);
   const { audioStream } = tts.toStream("Hello World, this is a demo for the text-to-speech capabilities of Read-Out To dot me.");
+
+  const { req } = c;
+  const { raw: rawReq } = req;
+  rawReq.signal.addEventListener('abort', () => {
+    tts.close();
+  });
 
   // the msedge-tts package uses node.js streams, so convert them to native web streams first
   const webStream = Readable.toWeb(audioStream);
