@@ -108,3 +108,20 @@ h1 {
     font-size: 4rem;
   }
 }
+
+/* firefox-specific audio element styling, firefox detection from https://stackoverflow.com/a/5874150 */
+@-moz-document url-prefix() {
+  audio {
+    font-size: 3rem;
+    border-radius: 200px;
+    overflow: hidden;
+    filter: saturate(0) contrast(10) invert(1) brightness(0.9) sepia(1) hue-rotate(-50deg);
+  }
+
+  body.dark {
+    audio {
+      filter: saturate(0) contrast(10) brightness(0.9) sepia(1) saturate(2) hue-rotate(-50deg);
+      border: solid;
+    }
+  }
+}
