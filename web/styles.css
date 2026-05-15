@@ -114,7 +114,7 @@ h1 {
   }
 }
 
-/* firefox-specific audio element styling, firefox detection from https://stackoverflow.com/a/5874150 */
+/* firefox-specific styling, firefox detection from https://stackoverflow.com/a/5874150 */
 @-moz-document url-prefix() {
   audio {
     font-size: 3rem;
@@ -128,5 +128,10 @@ h1 {
       filter: saturate(0) contrast(10) brightness(0.9) sepia(1) saturate(2) hue-rotate(-50deg);
       border: solid;
     }
+  }
+
+  select {
+    /* fix for firefox select having a white background while open / having :focus (beercss has an accessible focus highlight) */
+    background: transparent !important;
   }
 }
