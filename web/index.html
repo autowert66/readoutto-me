@@ -12,7 +12,7 @@
 </head>
 
 <body>
-  <h1>Read<span class="subtle" data-text="·" aria-hidden="true"></span>Out<span class="subtle" data-text="·" aria-hidden="true"></span>To<span class="subtle selectable">.</span>me</h1>
+  <h1>Read<span class="subtle" data-text="·" aria-hidden="true"></span>Out<span class="subtle" data-text="·" aria-hidden="true"></span>To<span class="subtle selectable" aria-label="dot">.</span>me</h1>
   <p>Read text out online</p>
 
 
@@ -20,34 +20,34 @@
     <div class="field label border">
       <!-- rows attribute is set to disable automatic resizing, see https://github.com/beercss/beercss/blob/main/docs/TEXTAREA.md -->
       <textarea id="toread-textarea" rows="10"></textarea>
-      <label>Text to read</label>
+      <label for="toread-textarea">Text to read</label>
     </div>
 
     <fieldset>
       <legend>
-        <i>settings</i>
+        <i aria-hidden="true">settings</i>
         <span>Options</span>
       </legend>
       <div class="field border prefix suffix label">
-        <i>translate</i>
-        <select>
+        <i aria-hidden="true">translate</i>
+        <select id="lang-select">
           <option selected>English (United States)</option>
         </select>
-        <label>Language</label>
-        <i>arrow_drop_down</i>
+        <label for="lang-select">Language</label>
+        <i aria-hidden="true">arrow_drop_down</i>
       </div>
       <div class="field border prefix suffix label">
-        <i>lips</i>
-        <select>
+        <i aria-hidden="true">lips</i>
+        <select id="voice-select">
           <option selected>[RANDOM] Neutral</option>
         </select>
-        <label>Speaker</label>
-        <i>arrow_drop_down</i>
+        <label for="voice-select">Speaker</label>
+        <i aria-hidden="true">arrow_drop_down</i>
       </div>
     </fieldset>
     <br>
     <button id="play-audio-btn" class="responsive border vertical">
-      <i>wand_stars</i>
+      <i aria-hidden="true">wand_stars</i>
       <span>Play Audio</span>
     </button>
     <br>
