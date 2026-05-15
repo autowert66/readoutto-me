@@ -14,6 +14,6 @@ playAudioBtn.addEventListener('click', (ev) => {
   }
 
   // append a unique query parameter to trigger a new request and bypass the cache
-  audioEl.src = `/helloworld.webm?t=${Date.now()}`;
+  audioEl.src = `/api/helloworld.webm?t=${Date.now()}`;
   audioEl.play();
 });
