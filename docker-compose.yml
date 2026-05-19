@@ -2,7 +2,11 @@ name: readoutto-me
 services:
   web:
     build: .
+    volumes:
+      - data:/app/data
     ports:
       - "127.0.0.1:8023:8080"
     restart: "unless-stopped"
 
+volumes:
+  data:

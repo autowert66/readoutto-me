@@ -3,6 +3,13 @@ import { MsEdgeTTS, type Voice } from 'msedge-tts';
 let _voices: Voice[] | null = null;
 let _voicesPromise: Promise<Voice[]> | null = null;
 
+const timeout = (ms: number): Promise<never> => new Promise((_, reject) => {
+  setTimeout(
+    () => reject(new Error(`Timeout after ${ms}ms`)),
+    ms
+  );
+});
+
 // load voices, prefer local file and if it does not exist/fails read from the api
 async function _getVoices() {
   try {
@@ -11,7 +18,10 @@ async function _getVoices() {
     return _voices;
   } catch (_err) {
     const tts = new MsEdgeTTS();
-    _voices = await tts.getVoices();
+    _voices = await Promise.race([
+      tts.getVoices(),
+      timeout(5_000),
+    ]);
 
     try {
       const json = JSON.stringify(_voices);
@@ -31,7 +41,10 @@ export async function getVoices(): Promise<Voice[]> {
   if (_voicesPromise) return _voicesPromise;
 
   _voicesPromise = _getVoices();
-  _voicesPromise.catch(() => _voicesPromise = null); // clear on error to not cause persistent errors
+  _voicesPromise.catch((err) => {
+    _voicesPromise = null;
+    throw err;
+  }); // clear on error to not cause persistent errors
 
   return await _voicesPromise;
 }

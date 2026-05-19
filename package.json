@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "deno run --allow-net --allow-read=public --allow-read=web --allow-read=data --allow-write=data --allow-env src/server.ts",
+    "start": "deno run --no-prompt --allow-net --allow-read=public --allow-read=web --allow-read=data --allow-write=data --allow-env src/server.ts",
     "dev": "deno run --watch --allow-net --allow-read=public --allow-read=web  --allow-read=data --allow-write=data --allow-env src/server.ts",
     "build": "rm -rf dist && mkdir dist && deno task build:html && deno task build:css && deno task build:js",
     "build:html": "deno run -A npm:html-minifier --keep-closing-slash  --collapse-whitespace --collapse-boolean-attributes --conservative-collapse --remove-comments --output-dir dist/ --input-dir web/ --file-ext html",
