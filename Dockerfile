@@ -9,6 +9,7 @@ FROM base AS builder
 RUN deno install --frozen
 
 COPY web web
+COPY public public
 
 RUN deno task build
 
@@ -18,11 +19,9 @@ ENV NODE_ENV=production
 
 RUN deno install --frozen
 
-# copy public first since it is changed less often, so that more layers remain cached
-COPY public public
 COPY src src
 
-COPY --from=builder /app/dist web
+COPY --from=builder /app/dist dist
 
 EXPOSE 8080
 
