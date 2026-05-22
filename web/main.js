@@ -1,6 +1,8 @@
 import { getVoices } from './utils/getVoices.js';
 import { createOption } from './utils/createOption.js';
 
+import './utils/dynamicTheme.js';
+
 /** @type {HTMLTextAreaElement} */
 const toreadTextarea = document.getElementById('toread-textarea');
 const langSelect = document.getElementById('lang-select');
@@ -8,9 +10,6 @@ const voiceSelect = document.getElementById('voice-select');
 const playAudioBtn = document.getElementById('play-audio-btn');
 
 let audioEl;
-
-// dynamically import dynamic-theme in a non-blocking way since it is not critical (promise is not awaited)
-import('./utils/dynamic-theme.js');
 
 getVoices().then((voices) => {
   const languagesSet = new Set(

@@ -11,7 +11,7 @@
     "build:public": "cp -r public/* dist/",
     "build:html": "deno run -A npm:html-minifier --keep-closing-slash  --collapse-whitespace --collapse-boolean-attributes --conservative-collapse --remove-comments --output-dir dist/ --input-dir web/ --file-ext html",
     "build:css": "deno run -A npm:postcss-cli web/**/*.css --dir dist/ --use autoprefixer --use cssnano --no-map",
-    "build:js": "deno run -A npm:esbuild --format=esm --target=es2022 --minify --outdir=dist/ web/**/*.*js",
+    "build:js": "deno run -A npm:esbuild --format=esm --target=es2022 --minify --bundle --outdir=dist/ web/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
