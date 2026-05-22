@@ -81,9 +81,13 @@ body.dark {
 }
 
 body {
+  /* inlined in index.html
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center; */
+
+  height: 100vh;
+  height: 100dvh; /* duplicate height to use dynamic viewport height on supported browsers (accounts visible/hidden browser ui on mobile) */
 
   background: var(--background);
 }
