@@ -123,6 +123,36 @@ fieldset {
   min-width: 0;
 }
 
+#audioContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-top: 1rem;
+}
+
+.site-footer {
+  /* push to bottom of flex container */
+  margin-top: auto;
+  padding: 2rem 1rem 1rem;
+  font-size: 0.85rem;
+  color: var(--on-surface-variant);
+  text-align: center;
+  opacity: 0.8;
+}
+
+.site-footer a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: #8886;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s ease;
+}
+
+.site-footer a:hover {
+  opacity: 0.6;
+}
+
 @media screen and (min-width: 768px) {
   h1 {
     font-size: 4rem;
