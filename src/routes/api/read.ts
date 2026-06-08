@@ -1,6 +1,7 @@
 import { Readable } from 'node:stream';
 import { Hono } from 'hono';
 import { MsEdgeTTS, OUTPUT_FORMAT } from 'msedge-tts';
+import xmlEscape from 'xml-escape';
 
 const readRoute = new Hono();
 
@@ -15,8 +16,10 @@ readRoute.get('/read', async (c) => {
     return c.json({ error: 'voice query parameter is required' }, 400);
   }
 
+  const escapedText = xmlEscape(text);
+
   await tts.setMetadata(voice, OUTPUT_FORMAT.WEBM_24KHZ_16BIT_MONO_OPUS);
-  const { audioStream } = tts.toStream(text);
+  const { audioStream } = tts.toStream(escapedText);
 
   // the msedge-tts package uses node.js streams, so convert them to native web streams first
   const webStream = Readable.toWeb(audioStream);

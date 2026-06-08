@@ -8,7 +8,8 @@
     "npm:html-minifier@4": "4.0.0",
     "npm:msedge-tts@^2.0.5": "2.0.5",
     "npm:postcss-cli@^11.0.1": "11.0.1_postcss@8.5.14",
-    "npm:postcss@^8.5.14": "8.5.14"
+    "npm:postcss@^8.5.14": "8.5.14",
+    "npm:xml-escape@^1.1.0": "1.1.0"
   },
   "npm": {
     "@colordx/core@5.4.3": {
@@ -1133,6 +1134,9 @@
     "ws@8.20.0": {
       "integrity": "sha512-sAt8BhgNbzCtgGbt2OxmpuryO63ZoDk/sqaB/znQm94T4fCEsy/yV+7CdC1kJhOU9lboAEU7R3kquuycDoibVA=="
     },
+    "xml-escape@1.1.0": {
+      "integrity": "sha512-B/T4sDK8Z6aUh/qNr7mjKAwwncIljFuUP+DO/D5hloYFj+90O88z8Wf7oSucZTHxBAsC1/CTP4rtx/x1Uf72Mg=="
+    },
     "y18n@5.0.8": {
       "integrity": "sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA=="
     },
@@ -1166,7 +1170,8 @@
         "npm:html-minifier@4",
         "npm:msedge-tts@^2.0.5",
         "npm:postcss-cli@^11.0.1",
-        "npm:postcss@^8.5.14"
+        "npm:postcss@^8.5.14",
+        "npm:xml-escape@^1.1.0"
       ]
     }
   }
