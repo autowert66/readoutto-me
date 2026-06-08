@@ -2,6 +2,7 @@ import { Readable } from 'node:stream';
 import { Hono } from 'hono';
 import { MsEdgeTTS, OUTPUT_FORMAT } from 'msedge-tts';
 import xmlEscape from 'xml-escape';
+import { isVoiceValid } from "../../utils/isVoiceValid.ts";
 
 const readRoute = new Hono();
 
@@ -16,7 +17,12 @@ readRoute.get('/read', async (c) => {
     return c.json({ error: 'voice query parameter is required' }, 400);
   }
 
-  const escapedText = xmlEscape(text);
+  const validVoice = await isVoiceValid(voice);
+  const escapedText = xmlEscape(text).trim();
+
+  if (!validVoice) {
+    return c.json({ error: `invalid voice specified: ${voice}` }, 400);
+  }
 
   await tts.setMetadata(voice, OUTPUT_FORMAT.WEBM_24KHZ_16BIT_MONO_OPUS);
   const { audioStream } = tts.toStream(escapedText);
