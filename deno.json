@@ -1,6 +1,13 @@
 {
+  "workspace": ["./src", "./web"],
+  "fmt": {
+    "singleQuote": true,
+    "lineWidth": 100,
+    "trailingCommas": "onlyMultiLine"
+  },
   "allowScripts": {
     "allow": [],
     "deny": ["npm:msedge-tts@2.0.5"]
-  }
+  },
+  "exclude": ["dist/", "public/"]
 }
