@@ -6,12 +6,10 @@
   "type": "module",
   "scripts": {
     "start": "deno run --no-prompt --allow-net --allow-read=dist --allow-read=data --allow-write=data --allow-env src/server.ts",
-    "dev": "deno run --watch --allow-net --allow-read=public --allow-read=web --allow-read=data --allow-write=data --allow-env src/server.ts --dev",
-    "build": "rm -rf dist && mkdir dist && deno task build:html && deno task build:css && deno task build:js && deno task build:public",
-    "build:public": "cp -r public/* dist/",
-    "build:html": "deno run -A npm:html-minifier --keep-closing-slash  --collapse-whitespace --collapse-boolean-attributes --conservative-collapse --remove-comments --output-dir dist/ --input-dir web/ --file-ext html",
-    "build:css": "deno run -A npm:postcss-cli web/**/*.css --dir dist/ --use autoprefixer --use cssnano --no-map",
-    "build:js": "deno run -A npm:esbuild --format=esm --target=es2022 --minify --bundle --outdir=dist/ web/main.js",
+    "dev": "concurrently \"deno task dev:client\" \"deno task dev:server\"",
+    "dev:server": "deno run --watch --allow-net --allow-read=dist --allow-read=data --allow-write=data --allow-env src/server.ts",
+    "dev:client": "vite build --watch",
+    "build": "vite build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -24,11 +22,7 @@
     "xml-escape": "^1.1.0"
   },
   "devDependencies": {
-    "autoprefixer": "^10.5.0",
-    "cssnano": "^8.0.1",
-    "esbuild": "^0.28.0",
-    "html-minifier": "^4.0.0",
-    "postcss": "^8.5.14",
-    "postcss-cli": "^11.0.1"
+    "concurrently": "^10.0.3",
+    "vite": "^8.0.16"
   }
 }

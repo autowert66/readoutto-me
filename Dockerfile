@@ -1,4 +1,4 @@
-FROM denoland/deno:alpine as base
+FROM denoland/deno:latest AS base
 
 WORKDIR /app
 
@@ -8,6 +8,7 @@ FROM base AS builder
 
 RUN deno install --frozen
 
+COPY vite.config.js postcss.config.js ./
 COPY web web
 COPY public public
 
@@ -22,6 +23,9 @@ RUN deno install --frozen
 COPY src src
 
 COPY --from=builder /app/dist dist
+
+RUN mkdir data
+
 
 EXPOSE 8080
 
