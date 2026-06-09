@@ -4,17 +4,17 @@ import { createOption } from './utils/createOption.js';
 import './utils/dynamicTheme.js';
 
 /** @type {HTMLTextAreaElement} */
-const toreadTextarea = document.getElementById('toread-textarea');
-const langSelect = document.getElementById('lang-select');
-const voiceSelect = document.getElementById('voice-select');
-const playAudioBtn = document.getElementById('play-audio-btn');
-const audioContainer = document.getElementById('audioContainer');
+const toreadTextarea = document.getElementById('toread-textarea')! as HTMLTextAreaElement;
+const langSelect = document.getElementById('lang-select')! as HTMLSelectElement;
+const voiceSelect = document.getElementById('voice-select')! as HTMLSelectElement;
+const playAudioBtn = document.getElementById('play-audio-btn')!;
+const audioContainer = document.getElementById('audioContainer')!;
 
-let audioEl;
+let audioEl: HTMLAudioElement;
 
 getVoices().then((voices) => {
-  const languagesSet = new Set(
-    voices.map((voice) => voice.Locale)
+  const languagesSet = new Set<string>(
+    voices.map((voice: any) => voice.Locale)
   );
 
   const languageDisplayNames = new Intl.DisplayNames(['en'], { type: 'language' });
@@ -73,7 +73,7 @@ playAudioBtn.addEventListener('click', (ev) => {
   const voice = voiceSelect.value;
 
   if (!value) {
-    const parent = toreadTextarea.parentElement;
+    const parent = toreadTextarea.parentElement!;
     if (parent.querySelector('output')) return;
 
     const output = document.createElement('output');
