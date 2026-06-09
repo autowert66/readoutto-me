@@ -1,108 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReadOutTo.me</title>
+    <meta
+      name="description"
+      content="Read text out loud online using natural-sounding voices. Paste or type your text and listen instantly."
+    >
+    <meta name="author" content="ReadOutTo.me">
+    <!-- light/dark-mode aware theme colors. values are the same as css var(--background) -->
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7e9d9">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#201a17">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="ReadOutTo" />
+    <link rel="manifest" href="/site.webmanifest" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ReadOutTo.me</title>
-  <meta name="description" content="Read text out loud online using natural-sounding voices. Paste or type your text and listen instantly.">
-  <meta name="author" content="ReadOutTo.me">
-  <!-- light/dark-mode aware theme colors. values are the same as css var(--background) -->
-  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7e9d9">
-  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#201a17">
-  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="shortcut icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-  <meta name="apple-mobile-web-app-title" content="ReadOutTo" />
-  <link rel="manifest" href="/site.webmanifest" />
+    <!-- open graph tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="ReadOutTo.me">
+    <meta
+      property="og:description"
+      content="Read text out loud online using natural-sounding voices. Paste or type your text and listen instantly."
+    >
+    <meta property="og:url" content="https://readoutto.me">
+    <meta property="og:site_name" content="ReadOutTo.me">
+    <meta property="og:locale" content="en_US">
 
-  <!-- open graph tags -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="ReadOutTo.me">
-  <meta property="og:description" content="Read text out loud online using natural-sounding voices. Paste or type your text and listen instantly.">
-  <meta property="og:url" content="https://readoutto.me">
-  <meta property="og:site_name" content="ReadOutTo.me">
-  <meta property="og:locale" content="en_US">
+    <!-- twitter tags -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="ReadOutTo.me">
+    <meta
+      name="twitter:description"
+      content="Read text out loud online using natural-sounding voices. Paste or type your text and listen instantly."
+    >
 
-  <!-- twitter tags -->
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="ReadOutTo.me">
-  <meta name="twitter:description" content="Read text out loud online using natural-sounding voices. Paste or type your text and listen instantly.">
+    <link
+      rel="preload"
+      href="/vendor/material-symbols-outlined.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    >
+    <link href="/vendor/beer.min.css" rel="stylesheet">
+    <script type="module" src="/vendor/beer.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="main.ts" type="module" defer></script>
 
-  <link rel="preload" href="/vendor/material-symbols-outlined.woff2" as="font" type="font/woff2" crossorigin>
-  <link href="/vendor/beer.min.css" rel="stylesheet">
-  <script type="module" src="/vendor/beer.min.js"></script>
-  <link rel="stylesheet" href="styles.css">
-  <script src="main.ts" type="module" defer></script>
+    <!-- inline main app layout style, in case loading styles.css fails -->
+    <!-- happened to me while in public transit, so that makes the app usable even then -->
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    </style>
+  </head>
 
-  <!-- inline main app layout style, in case loading styles.css fails -->
-  <!-- happened to me while in public transit, so that makes the app usable even then -->
-  <style>
-    body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  </style>
-</head>
+  <body>
+    <header>
+      <h1>
+        Read<span class="subtle" data-text="·" aria-hidden="true"></span>Out<span
+          class="subtle"
+          data-text="·"
+          aria-hidden="true"
+        ></span>To<span class="subtle selectable" aria-label="dot">.</span>me
+      </h1>
+      <p>Read text out online</p>
+    </header>
 
-<body>
-  <header>
-    <h1>Read<span class="subtle" data-text="·" aria-hidden="true"></span>Out<span class="subtle" data-text="·" aria-hidden="true"></span>To<span class="subtle selectable" aria-label="dot">.</span>me</h1>
-    <p>Read text out online</p>
-  </header>
-
-
-  <main class="responsive">
-    <div class="field label border">
-      <!-- rows attribute is set to disable automatic resizing, see https://github.com/beercss/beercss/blob/main/docs/TEXTAREA.md -->
-      <textarea id="toread-textarea" rows="10"></textarea>
-      <label for="toread-textarea">Text to read</label>
-    </div>
-
-    <fieldset>
-      <legend>
-        <i aria-hidden="true">settings</i>
-        <span>Options</span>
-      </legend>
-      <div class="field border prefix suffix label">
-        <i aria-hidden="true">translate</i>
-        <select id="lang-select" autocomplete="off">
-          <option value="en-US" selected>American English</option>
-        </select>
-        <label for="lang-select">Language</label>
-        <i aria-hidden="true">arrow_drop_down</i>
+    <main class="responsive">
+      <div class="field label border">
+        <!-- rows attribute is set to disable automatic resizing, see https://github.com/beercss/beercss/blob/main/docs/TEXTAREA.md -->
+        <textarea id="toread-textarea" rows="10"></textarea>
+        <label for="toread-textarea">Text to read</label>
       </div>
-      <div class="field border prefix suffix label">
-        <i aria-hidden="true">lips</i>
-        <select id="voice-select" autocomplete="off">
-          <option value="en-US-AvaNeural" selected>Ava</option>
-        </select>
-        <label for="voice-select">Speaker</label>
-        <i aria-hidden="true">arrow_drop_down</i>
+
+      <fieldset>
+        <legend>
+          <i aria-hidden="true">settings</i>
+          <span>Options</span>
+        </legend>
+        <div class="field border prefix suffix label">
+          <i aria-hidden="true">translate</i>
+          <select id="lang-select" autocomplete="off">
+            <option value="en-US" selected>American English</option>
+          </select>
+          <label for="lang-select">Language</label>
+          <i aria-hidden="true">arrow_drop_down</i>
+        </div>
+        <div class="field border prefix suffix label">
+          <i aria-hidden="true">lips</i>
+          <select id="voice-select" autocomplete="off">
+            <option value="en-US-AvaNeural" selected>Ava</option>
+          </select>
+          <label for="voice-select">Speaker</label>
+          <i aria-hidden="true">arrow_drop_down</i>
+        </div>
+      </fieldset>
+      <br>
+      <button id="play-audio-btn" class="responsive border vertical">
+        <i aria-hidden="true">wand_stars</i>
+        <span>Play Audio</span>
+      </button>
+      <br>
+
+      <div id="audioContainer" aria-live="polite">
+        <!-- audio element is inserted here on first play -->
       </div>
-    </fieldset>
-    <br>
-    <button id="play-audio-btn" class="responsive border vertical">
-      <i aria-hidden="true">wand_stars</i>
-      <span>Play Audio</span>
-    </button>
-    <br>
+    </main>
 
-    <div id="audioContainer" aria-live="polite">
-      <!-- audio element is inserted here on first play -->
-    </div>
-  </main>
-
-
-  <footer class="site-footer">
-    <span>
-      Licensed under WTFPL&nbsp;·&nbsp;
-      <a href="https://github.com/autowert66/readoutto-me" target="_blank" rel="noopener">GitHub</a>&nbsp;·&nbsp;
-      <a href="https://status.readoutto.me" target="_blank" rel="noopener">Status</a>
-    </span>
-  </footer>
-</body>
-
+    <footer class="site-footer">
+      <span>
+        Licensed under WTFPL&nbsp;·&nbsp;
+        <a href="https://github.com/autowert66/readoutto-me" target="_blank" rel="noopener"
+        >GitHub</a>&nbsp;·&nbsp;
+        <a href="https://status.readoutto.me" target="_blank" rel="noopener">Status</a>
+      </span>
+    </footer>
+  </body>
 </html>

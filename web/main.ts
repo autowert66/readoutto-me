@@ -15,7 +15,7 @@ let audioEl: HTMLAudioElement;
 
 getVoices().then((voices) => {
   const languagesSet = new Set<string>(
-    voices.map((voice: any) => voice.Locale)
+    voices.map((voice: any) => voice.Locale),
   );
 
   const languageDisplayNames = new Intl.DisplayNames(['en'], { type: 'language' });
@@ -50,7 +50,7 @@ getVoices().then((voices) => {
       const readableName = ShortName
         .replace(/^.+-/, '')
         .replace(/([a-z])([A-Z])/g, '$1 $2')
-        .replace(/\s?Neural$/, '')
+        .replace(/\s?Neural$/, '');
 
       const option = createOption(ShortName, readableName);
 
@@ -58,7 +58,7 @@ getVoices().then((voices) => {
       else maleVoices.appendChild(option);
     }
   }
-  
+
   langSelect.addEventListener('change', () => {
     handleLangChange();
   });

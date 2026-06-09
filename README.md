@@ -4,7 +4,8 @@ Web Application for accessible text to speech online.
 
 ## Run the application
 
-Install Deno by following the [official instructions](https://docs.deno.com/runtime/getting_started/installation/).
+Install Deno by following the
+[official instructions](https://docs.deno.com/runtime/getting_started/installation/).
 
 Execute in the project folder:
 

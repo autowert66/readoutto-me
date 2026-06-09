@@ -4,11 +4,11 @@ import { z } from 'zod';
 import { zValidator } from '@hono/zod-validator';
 import { MsEdgeTTS, OUTPUT_FORMAT } from 'msedge-tts';
 import xmlEscape from 'xml-escape';
-import { isVoiceValid } from "../../utils/isVoiceValid.ts";
+import { isVoiceValid } from '../../utils/isVoiceValid.ts';
 
 const querySchema = z.object({
   text: z.string().min(1),
-  voice: z.string().min(1)
+  voice: z.string().min(1),
 });
 
 const readRoute = new Hono().get(
@@ -38,7 +38,7 @@ const readRoute = new Hono().get(
         'Content-Type': 'audio/webm; codecs=opus',
       },
     });
-  }
+  },
 );
 
 export { readRoute };

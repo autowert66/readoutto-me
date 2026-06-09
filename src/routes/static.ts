@@ -3,7 +3,7 @@ import { serveStatic } from 'hono/deno';
 
 const staticRoute = new Hono()
   .get('/index.html', (c) => c.redirect('/', 301))
-    // aggressive caching for /vendor/ requests
+  // aggressive caching for /vendor/ requests
   .use('/vendor/*', async (c, next) => {
     c.header('Cache-Control', 'public, max-age=31536000, immutable');
     await next();
