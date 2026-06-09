@@ -1,7 +1,8 @@
 import { client } from './client.ts';
+import type { Voice } from 'msedge-tts';
 
-let _voices: any[] | null = null;
-let _voicesPromise: Promise<any[]> | null = null;
+let _voices: Voice[] | null = null;
+let _voicesPromise: Promise<Voice[]> | null = null;
 
 async function _getVoices() {
   const res = await client.api.voices.$get({}, {

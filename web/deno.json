@@ -6,5 +6,12 @@
       "dom.asynciterable",
       "deno.ns"
     ]
+  },
+  "lint": {
+    "rules": {
+      "exclude": [
+        "no-window"
+      ]
+    }
   }
 }

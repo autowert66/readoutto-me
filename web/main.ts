@@ -1,8 +1,11 @@
-import { getVoices } from './utils/getVoices.js';
-import { createOption } from './utils/createOption.js';
-import { client } from './utils/client.ts';
+import 'beercss/dist/cdn/beer.min.js';
 
-import './utils/dynamicTheme.js';
+import { getVoices } from './utils/getVoices.ts';
+import { createOption } from './utils/createOption.ts';
+import { client } from './utils/client.ts';
+import type { Voice } from 'msedge-tts';
+
+import './utils/dynamicTheme.ts';
 
 /** @type {HTMLTextAreaElement} */
 const toreadTextarea = document.getElementById('toread-textarea')! as HTMLTextAreaElement;
@@ -15,13 +18,13 @@ let audioEl: HTMLAudioElement;
 
 getVoices().then((voices) => {
   const languagesSet = new Set<string>(
-    voices.map((voice: any) => voice.Locale),
+    voices.map((voice: Voice) => voice.Locale),
   );
 
   const languageDisplayNames = new Intl.DisplayNames(['en'], { type: 'language' });
   langSelect.replaceChildren();
   for (const lang of languagesSet) {
-    const option = createOption(lang, languageDisplayNames.of(lang));
+    const option = createOption(lang, languageDisplayNames.of(lang) || lang);
     langSelect.appendChild(option);
   }
 

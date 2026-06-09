@@ -18,7 +18,7 @@ const helloWorldRoute = new Hono().get('/helloworld.webm', async () => {
   );
 
   // the msedge-tts package uses node.js streams, so convert them to native web streams first
-  const webStream = Readable.toWeb(audioStream);
+  const webStream = Readable.toWeb(audioStream) as unknown as ReadableStream;
 
   return new Response(webStream, {
     headers: {
