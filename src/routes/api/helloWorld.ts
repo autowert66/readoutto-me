@@ -4,9 +4,7 @@ import { MsEdgeTTS, OUTPUT_FORMAT } from 'msedge-tts';
 
 import { getVoices } from '../../utils/getVoices.ts';
 
-const helloWorldRoute = new Hono();
-
-helloWorldRoute.get('/helloworld.webm', async () => {
+const helloWorldRoute = new Hono().get('/helloworld.webm', async () => {
   const tts = new MsEdgeTTS();
 
   // select a random en-US- voice, for the demo to be more useful

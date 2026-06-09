@@ -1,5 +1,6 @@
 import { getVoices } from './utils/getVoices.js';
 import { createOption } from './utils/createOption.js';
+import { client } from './utils/client.ts';
 
 import './utils/dynamicTheme.js';
 
@@ -97,9 +98,13 @@ playAudioBtn.addEventListener('click', (ev) => {
     audioContainer.appendChild(audioEl);
   }
 
-  const searchParams = new URLSearchParams();
-  searchParams.set('text', value);
-  searchParams.set('voice', voice);
-  audioEl.src = '/api/read?' + searchParams.toString();
+  const url = client.api.read.$url({
+    query: {
+      text: value,
+      voice: voice,
+    },
+  });
+
+  audioEl.src = url.toString();
   audioEl.play();
 });

@@ -1,12 +1,14 @@
 {
   "version": "5",
   "specifiers": {
+    "npm:@hono/zod-validator@0.8": "0.8.0_hono@4.12.18_zod@4.4.3",
     "npm:concurrently@^10.0.3": "10.0.3",
     "npm:hono@^4.12.18": "4.12.18",
     "npm:msedge-tts@^2.0.5": "2.0.5",
     "npm:vite-plugin-simple-html@^1.1.0": "1.1.0_vite@8.0.16",
     "npm:vite@^8.0.16": "8.0.16",
-    "npm:xml-escape@^1.1.0": "1.1.0"
+    "npm:xml-escape@^1.1.0": "1.1.0",
+    "npm:zod@^4.4.3": "4.4.3"
   },
   "npm": {
     "@emnapi/core@1.10.0": {
@@ -26,6 +28,13 @@
       "integrity": "sha512-uTII7OYF+/Mes/MrcIOYp5yOtSMLBWSIoLPpcgwipoiKbli6k322tcoFsxoIIxPDqW01SQGAgko4EzZi2BNv2w==",
       "dependencies": [
         "tslib"
+      ]
+    },
+    "@hono/zod-validator@0.8.0_hono@4.12.18_zod@4.4.3": {
+      "integrity": "sha512-5uS4S1/LKtZQYvD4BtpPUFkOv8d1wNxHHrChm26buMiEYc1FrHWvDUaKVBwkiVtvSExHSpLGDvcnpI2Copyj9w==",
+      "dependencies": [
+        "hono",
+        "zod"
       ]
     },
     "@napi-rs/wasm-runtime@1.1.4_@emnapi+core@1.10.0_@emnapi+runtime@1.10.0": {
@@ -669,17 +678,22 @@
         "y18n",
         "yargs-parser"
       ]
+    },
+    "zod@4.4.3": {
+      "integrity": "sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ=="
     }
   },
   "workspace": {
     "packageJson": {
       "dependencies": [
+        "npm:@hono/zod-validator@0.8",
         "npm:concurrently@^10.0.3",
         "npm:hono@^4.12.18",
         "npm:msedge-tts@^2.0.5",
         "npm:vite-plugin-simple-html@^1.1.0",
         "npm:vite@^8.0.16",
-        "npm:xml-escape@^1.1.0"
+        "npm:xml-escape@^1.1.0",
+        "npm:zod@^4.4.3"
       ]
     }
   }
