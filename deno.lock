@@ -7,6 +7,7 @@
     "npm:concurrently@^10.0.3": "10.0.3",
     "npm:hono@^4.12.18": "4.12.18",
     "npm:msedge-tts@^2.0.5": "2.0.5",
+    "npm:simple-git-hooks@^2.13.1": "2.13.1",
     "npm:vite-plugin-simple-html@^1.1.0": "1.1.0_vite@8.0.16__@types+node@25.9.2_@types+node@25.9.2",
     "npm:vite@^8.0.16": "8.0.16_@types+node@25.9.2",
     "npm:xml-escape@^1.1.0": "1.1.0",
@@ -588,6 +589,11 @@
     "shell-quote@1.8.4": {
       "integrity": "sha512-VsC6n6vz1ihYYyZZwX7YZSF5l5x36ca17OC+a69h94YqB7X6XLwf+5MOgynYir2SLFUbl8gIYvBo8K8RoNQ6bQ=="
     },
+    "simple-git-hooks@2.13.1": {
+      "integrity": "sha512-WszCLXwT4h2k1ufIXAgsbiTOazqqevFCIncOuUBZJ91DdvWcC5+OFkluWRQPrcuSYd8fjq+o2y1QfWqYMoAToQ==",
+      "scripts": true,
+      "bin": true
+    },
     "source-map-js@1.2.1": {
       "integrity": "sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA=="
     },
@@ -710,6 +716,7 @@
         "npm:concurrently@^10.0.3",
         "npm:hono@^4.12.18",
         "npm:msedge-tts@^2.0.5",
+        "npm:simple-git-hooks@^2.13.1",
         "npm:vite-plugin-simple-html@^1.1.0",
         "npm:vite@^8.0.16",
         "npm:xml-escape@^1.1.0",

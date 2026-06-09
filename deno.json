@@ -6,7 +6,7 @@
     "trailingCommas": "onlyMultiLine"
   },
   "allowScripts": {
-    "allow": [],
+    "allow": ["npm:fsevents@2.3.3", "npm:simple-git-hooks@2.13.1"],
     "deny": ["npm:msedge-tts@2.0.5"]
   },
   "exclude": ["dist/", "public/"]
