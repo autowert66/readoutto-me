@@ -8,7 +8,7 @@ FROM base AS builder
 
 RUN deno install --frozen
 
-COPY vite.config.js postcss.config.js ./
+COPY vite.config.js ./
 COPY web web
 COPY public public
 
