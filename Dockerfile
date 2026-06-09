@@ -26,6 +26,8 @@ COPY --from=builder /app/dist dist
 
 RUN mkdir data
 
+RUN chown -R deno:deno /app
+USER deno
 
 EXPOSE 8080
 
