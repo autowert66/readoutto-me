@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import simpleHtmlPlugin from 'vite-plugin-simple-html';
 
 export default defineConfig({
   root: 'web',
@@ -7,4 +8,10 @@ export default defineConfig({
     outDir: '../dist',
     emptyOutDir: true,
   },
+
+  plugins: [
+    simpleHtmlPlugin({
+      minify: true,
+    }),
+  ],
 });
