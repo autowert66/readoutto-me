@@ -35,6 +35,7 @@
     "vite-plugin-simple-html": "^1.1.0"
   },
   "simple-git-hooks": {
-    "pre-commit": "deno task verify"
+    "pre-commit": "deno task verify",
+    "pre-push": "deno task build --logLevel warn"
   }
 }
