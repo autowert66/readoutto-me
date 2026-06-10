@@ -133,6 +133,22 @@ fieldset {
   min-width: 0;
 }
 
+#primary-action-container {
+  display: flex;
+  flex-direction: row;
+}
+
+#play-audio-btn {
+  /* play / read button should be larger,
+     this ensures a 4:1 (4/5) unless there isn't enough space to fit the download button */
+  flex: 4;
+}
+
+#download-audio-btn {
+  flex: 1;
+  min-width: max-content;
+}
+
 #audioContainer {
   display: flex;
   flex-direction: column;

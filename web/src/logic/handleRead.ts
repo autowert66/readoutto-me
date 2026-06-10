@@ -3,9 +3,10 @@ import { client } from '../utils/client.ts';
 const toreadTextarea = document.getElementById('toread-textarea')! as HTMLTextAreaElement;
 const voiceSelect = document.getElementById('voice-select')! as HTMLSelectElement;
 const playAudioBtn = document.getElementById('play-audio-btn')! as HTMLButtonElement;
+const downloadAudioBtn = document.getElementById('download-audio-btn')! as HTMLButtonElement;
 const audioContainer = document.getElementById('audioContainer')!;
 
-let audioEl: HTMLAudioElement;
+let audioEl: HTMLAudioElement | undefined;
 
 playAudioBtn.addEventListener('click', async (ev) => {
   ev.preventDefault();
@@ -54,6 +55,7 @@ playAudioBtn.addEventListener('click', async (ev) => {
 
     if (audioEl.src) URL.revokeObjectURL(audioEl.src);
     audioEl.src = url;
+    downloadAudioBtn.disabled = false;
 
     audioEl.play();
   } finally {
@@ -61,3 +63,20 @@ playAudioBtn.addEventListener('click', async (ev) => {
     audioContainer.classList.remove('loading');
   }
 });
+
+downloadAudioBtn.addEventListener('click', (ev) => {
+  ev.preventDefault();
+
+  const url = audioEl?.src;
+  if (!url) return;
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'generated-speech.webm';
+  a.click();
+});
+
+// workaround for cases where reloading the page does not actually apply the disabled tag again
+if (!audioEl) {
+  downloadAudioBtn.disabled = true;
+}

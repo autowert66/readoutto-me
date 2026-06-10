@@ -93,12 +93,16 @@
           <i aria-hidden="true">arrow_drop_down</i>
         </div>
       </fieldset>
-      <br>
-      <button id="play-audio-btn" class="responsive border vertical">
-        <i aria-hidden="true">wand_stars</i>
-        <span>Play Audio</span>
-      </button>
-      <br>
+      <nav id="primary-action-container" class="group connected responsive">
+        <button id="play-audio-btn" class="border vertical left-round">
+          <i aria-hidden="true">wand_stars</i>
+          <span>Play Audio</span>
+        </button>
+        <button id="download-audio-btn" class="border vertical right-round" disabled>
+          <i aria-hidden="true">download</i>
+          <span>Download</span>
+        </button>
+      </nav>
 
       <div id="audioContainer" aria-live="polite">
         <div class="shape loading-indicator small" aria-hidden="true"></div>
