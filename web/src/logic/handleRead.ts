@@ -2,12 +2,12 @@ import { client } from '../utils/client.ts';
 
 const toreadTextarea = document.getElementById('toread-textarea')! as HTMLTextAreaElement;
 const voiceSelect = document.getElementById('voice-select')! as HTMLSelectElement;
-const playAudioBtn = document.getElementById('play-audio-btn')!;
+const playAudioBtn = document.getElementById('play-audio-btn')! as HTMLButtonElement;
 const audioContainer = document.getElementById('audioContainer')!;
 
 let audioEl: HTMLAudioElement;
 
-playAudioBtn.addEventListener('click', (ev) => {
+playAudioBtn.addEventListener('click', async (ev) => {
   ev.preventDefault();
 
   const { value } = toreadTextarea;
@@ -32,19 +32,32 @@ playAudioBtn.addEventListener('click', (ev) => {
     return;
   }
 
-  if (!audioEl) {
-    audioEl = document.createElement('audio');
-    audioEl.setAttribute('controls', '');
-    audioContainer.appendChild(audioEl);
+  playAudioBtn.disabled = true;
+  audioContainer.classList.add('loading');
+
+  try {
+    const res = await client.api.read.$post({
+      json: {
+        text: value,
+        voice: voice,
+      },
+    });
+
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+
+    if (!audioEl) {
+      audioEl = document.createElement('audio');
+      audioEl.setAttribute('controls', '');
+      audioContainer.appendChild(audioEl);
+    }
+
+    if (audioEl.src) URL.revokeObjectURL(audioEl.src);
+    audioEl.src = url;
+
+    audioEl.play();
+  } finally {
+    playAudioBtn.disabled = false;
+    audioContainer.classList.remove('loading');
   }
-
-  const url = client.api.read.$url({
-    query: {
-      text: value,
-      voice: voice,
-    },
-  });
-
-  audioEl.src = url.toString();
-  audioEl.play();
 });

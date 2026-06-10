@@ -1,4 +1,5 @@
 @import 'beercss/dist/cdn/beer.min.css';
+
 /* beercss theme generated on https://www.beercss.com/ from color #796557 */
 :root,
 body.light {
@@ -40,6 +41,8 @@ body.light {
   --surface-container-highest: #ece0da;
 
   --background: #f7e9d9; /* custom more sepia background */
+
+  --audio-blur-filter: blur(3px);
 }
 
 body.dark {
@@ -136,6 +139,36 @@ fieldset {
   align-items: center;
 
   margin-top: 1rem;
+  min-height: 3.5rem;
+
+  position: relative;
+}
+
+#audioContainer .loading-indicator {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+
+  visibility: hidden;
+  opacity: 0;
+
+  transition: opacity 0.2s ease-out, visibility 0.2s linear 0s;
+}
+
+#audioContainer audio {
+  transition: filter 0.1s ease-out;
+  will-change: filter;
+}
+
+#audioContainer.loading {
+  .loading-indicator {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  audio {
+    filter: var(--audio-blur-filter);
+  }
 }
 
 .site-footer {
@@ -166,18 +199,33 @@ fieldset {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  #audioContainer .loading-indicator,
+  #audioContainer audio {
+    transition: none;
+  }
+}
+
 /* firefox-specific styling, firefox detection from https://stackoverflow.com/a/5874150 */
 @-moz-document url-prefix() {
   audio {
     font-size: 3rem;
     border-radius: 200px;
     overflow: hidden;
-    filter: saturate(0) contrast(10) invert(1) brightness(0.9) sepia(1) hue-rotate(-50deg);
+
+    --invert-filter: saturate(0) contrast(10) invert(1) brightness(0.9) sepia(1) hue-rotate(-50deg);
+    filter: var(--invert-filter);
+  }
+
+  #audioContainer.loading audio {
+    filter: var(--invert-filter) var(--audio-blur-filter);
   }
 
   body.dark {
     audio {
-      filter: saturate(0) contrast(10) brightness(0.9) sepia(1) saturate(2) hue-rotate(-50deg);
+      --invert-filter: saturate(0) contrast(10) brightness(0.9) sepia(1) saturate(2) hue-rotate(
+        -50deg
+      );
       border: solid;
     }
   }
