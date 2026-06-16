@@ -1,8 +1,8 @@
 import { client } from './client.ts';
-import type { Voice } from 'msedge-tts';
+import type { ApiVoice } from '../../../src/routes/api/voices.ts';
 
-let _voices: Voice[] | null = null;
-let _voicesPromise: Promise<Voice[]> | null = null;
+let _voices: ApiVoice[] | null = null;
+let _voicesPromise: Promise<ApiVoice[]> | null = null;
 
 async function _getVoices() {
   const res = await client.api.voices.$get({}, {

@@ -1,14 +1,13 @@
 import { getVoices } from '../utils/getVoices.ts';
 import { createOption } from '../utils/createOption.ts';
-
-import type { Voice } from 'msedge-tts';
+import { ApiVoice } from '../../../src/routes/api/voices.ts';
 
 const langSelect = document.getElementById('lang-select')! as HTMLSelectElement;
 const voiceSelect = document.getElementById('voice-select')! as HTMLSelectElement;
 
 getVoices().then((voices) => {
   const languagesSet = new Set<string>(
-    voices.map((voice: Voice) => voice.Locale),
+    voices.map((voice) => voice.Locale),
   );
 
   const languageDisplayNames = new Intl.DisplayNames(['en'], { type: 'language' });
@@ -18,16 +17,19 @@ getVoices().then((voices) => {
     langSelect.appendChild(option);
   }
 
-  const voiceMap = new Map();
+  const voiceMap = new Map<string, ApiVoice[]>();
   for (const voice of voices) {
     const { Locale } = voice;
-    if (!voiceMap.has(Locale)) voiceMap.set(Locale, []);
-    voiceMap.get(Locale).push(voice);
+    if (!voiceMap.has(Locale)) {
+      voiceMap.set(Locale, []);
+    }
+    voiceMap.get(Locale)!.push(voice);
   }
 
   function handleLangChange() {
     const lang = langSelect.value;
     const voices = voiceMap.get(lang);
+    if (!voices) return;
 
     voiceSelect.replaceChildren();
 
