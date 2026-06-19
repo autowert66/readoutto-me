@@ -6,6 +6,8 @@ const voiceSelect = document.getElementById('voice-select')! as HTMLSelectElemen
 const playAudioBtn = document.getElementById('play-audio-btn')! as HTMLButtonElement;
 const downloadAudioBtn = document.getElementById('download-audio-btn')! as HTMLButtonElement;
 const audioContainer = document.getElementById('audioContainer')!;
+const errorSnackbarEl = document.getElementById('error-snackbar')!;
+const errorTextEl = document.getElementById('error-text')!;
 
 let audioEl: HTMLAudioElement | undefined;
 let blobPromise: Promise<Blob> | undefined;
@@ -64,18 +66,24 @@ playAudioBtn.addEventListener('click', async (ev) => {
       throw new Error('Non-ok status code');
     }
 
-    const [stream, downloadStream] = res.body!.tee();
     const codec = res.headers.get('Content-Type')!;
 
+    console.log('Creating MediaSource for res.body, codec %s!', codec);
+    const mediaSource = getMediaSource();
+    const codecIsSupported = (mediaSource.constructor as typeof MediaSource).isTypeSupported(codec);
+
+    if (!codecIsSupported) {
+      throw new Error(`Browser / MediaSource does not support codec ${codec}.`);
+    }
+
+    const url = URL.createObjectURL(mediaSource);
+
+    const [stream, downloadStream] = res.body!.tee();
     blobPromise = new Response(downloadStream, {
       headers: {
         'Content-Type': codec,
       },
     }).blob();
-
-    console.log('Creating media source for res.body, type %s', codec);
-    const mediaSource = getMediaSource();
-    const url = URL.createObjectURL(mediaSource);
 
     if (!audioEl) {
       audioEl = document.createElement('audio');
@@ -90,10 +98,11 @@ playAudioBtn.addEventListener('click', async (ev) => {
     audioEl.src = url;
 
     mediaSource.addEventListener('sourceopen', async () => {
-      console.log('source is open');
+      console.log('MediaSource: source is open');
 
       const sourceBuffer = mediaSource.addSourceBuffer(codec);
       audioEl!.play();
+
       for await (const chunk of makeAsyncIterable(stream)) {
         sourceBuffer.appendBuffer(chunk as BufferSource);
         await new Promise(
@@ -101,9 +110,17 @@ playAudioBtn.addEventListener('click', async (ev) => {
         );
       }
 
+      console.log('MediaSource loop: End of audio stream');
       mediaSource.endOfStream();
       downloadAudioBtn.disabled = false;
     }, { once: true });
+  } catch (err) {
+    console.error('Failed to play audio:\n%o', err);
+
+    errorTextEl.textContent = 'Failed to play audio: ';
+    errorTextEl.textContent += err instanceof Error ? err.message : String(err);
+    errorSnackbarEl.hidden = false;
+    ui(`#${errorSnackbarEl.id}`);
   } finally {
     playAudioBtn.disabled = false;
     audioContainer.classList.remove('loading');
