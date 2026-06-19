@@ -8,6 +8,7 @@ const downloadAudioBtn = document.getElementById('download-audio-btn')! as HTMLB
 const audioContainer = document.getElementById('audioContainer')!;
 
 let audioEl: HTMLAudioElement | undefined;
+let blobPromise: Promise<Blob> | undefined;
 
 // see: https://bitmovin.com/blog/managed-media-source/#migration-from-mse-to-mms-ed4921d7-725c-4010-b3d0-d32af2f44964
 function getMediaSource() {
@@ -62,8 +63,14 @@ playAudioBtn.addEventListener('click', async (ev) => {
       throw new Error('Non-ok status code');
     }
 
-    const stream = res.body!;
+    const [stream, downloadStream] = res.body!.tee();
     const codec = res.headers.get('Content-Type')!;
+
+    blobPromise = new Response(downloadStream, {
+      headers: {
+        'Content-Type': codec,
+      },
+    }).blob();
 
     console.log('Creating media source for res.body, type %s', codec);
     const mediaSource = getMediaSource();
@@ -80,7 +87,6 @@ playAudioBtn.addEventListener('click', async (ev) => {
     // clean up the old MediaSource
     if (audioEl.src) URL.revokeObjectURL(audioEl.src);
     audioEl.src = url;
-    // downloadAudioBtn.disabled = false;
 
     mediaSource.addEventListener('sourceopen', async () => {
       console.log('source is open');
@@ -95,6 +101,7 @@ playAudioBtn.addEventListener('click', async (ev) => {
       }
 
       mediaSource.endOfStream();
+      downloadAudioBtn.disabled = false;
     }, { once: true });
   } finally {
     playAudioBtn.disabled = false;
@@ -102,17 +109,22 @@ playAudioBtn.addEventListener('click', async (ev) => {
   }
 });
 
-downloadAudioBtn.addEventListener('click', (ev) => {
+downloadAudioBtn.addEventListener('click', async (ev) => {
   ev.preventDefault();
-  // not supported right now
 
-  const url = audioEl?.src;
-  if (!url) return;
+  if (!blobPromise) return;
+  const blob = await blobPromise;
+  const blobURL = URL.createObjectURL(blob);
 
   const a = document.createElement('a');
-  a.href = url;
+  a.href = blobURL;
   a.download = 'generated-speech.webm';
   a.click();
+
+  // prevent holding blob in memory forever
+  setTimeout(() => {
+    URL.revokeObjectURL(blobURL);
+  }, 1000);
 });
 
 // workaround for cases where reloading the page does not actually apply the disabled tag again
