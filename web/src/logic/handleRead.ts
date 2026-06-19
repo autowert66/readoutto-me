@@ -1,15 +1,15 @@
 import { client } from '../utils/client.ts';
 import { makeAsyncIterable } from '../utils/makeAsyncIterable.ts';
+import { showErrorSnackbar } from '../utils/showErrorSnackbar.ts';
 
 const toreadTextarea = document.getElementById('toread-textarea')! as HTMLTextAreaElement;
 const voiceSelect = document.getElementById('voice-select')! as HTMLSelectElement;
 const playAudioBtn = document.getElementById('play-audio-btn')! as HTMLButtonElement;
 const downloadAudioBtn = document.getElementById('download-audio-btn')! as HTMLButtonElement;
 const audioContainer = document.getElementById('audioContainer')!;
-const errorSnackbarEl = document.getElementById('error-snackbar')!;
-const errorTextEl = document.getElementById('error-text')!;
 
 let audioEl: HTMLAudioElement | undefined;
+// maximum audio duration is ~10min, so keeping the blob in memory is no issue (<5-10mb)
 let blobPromise: Promise<Blob> | undefined;
 let playAbortController: AbortController | undefined;
 
@@ -106,52 +106,62 @@ playAudioBtn.addEventListener('click', async (ev) => {
 
     // creating the source buffer requires waiting for the sourceopen event
     mediaSource.addEventListener('sourceopen', async () => {
-      console.log('MediaSource: source is open');
+      try {
+        console.log('MediaSource: source is open');
 
-      const sourceBuffer = mediaSource.addSourceBuffer(codec);
-      audioEl!.play().catch(() => {});
+        const sourceBuffer = mediaSource.addSourceBuffer(codec);
+        audioEl!.play().catch(() => {
+          // auto-play failed due to browser restrictions, but controls are visible so user can play manually
+        });
 
-      for await (const chunk of makeAsyncIterable(stream)) {
-        if (signal.aborted) break;
-        sourceBuffer.appendBuffer(chunk as BufferSource);
-        await new Promise(
-          (resolve) => sourceBuffer.addEventListener('updateend', resolve, { once: true, signal }),
-        );
+        for await (const chunk of makeAsyncIterable(stream)) {
+          if (signal.aborted) break;
+          sourceBuffer.appendBuffer(chunk as BufferSource);
+          await new Promise(
+            (resolve) =>
+              sourceBuffer.addEventListener('updateend', resolve, { once: true, signal }),
+          );
+        }
+
+        console.log('MediaSource loop: End of audio stream');
+        mediaSource.endOfStream();
+        if (!signal.aborted) downloadAudioBtn.disabled = false;
+      } catch (err) {
+        if (signal.aborted) {
+          return console.info('Sourceopen error after abort:', err);
+        }
+
+        console.error('Error in sourceopen MediaStream handler:\n%o', err);
+        showErrorSnackbar(err);
       }
-
-      console.log('MediaSource loop: End of audio stream');
-      mediaSource.endOfStream();
-      if (!signal.aborted) downloadAudioBtn.disabled = false;
     }, { once: true, signal });
   } catch (err) {
-    console.error('Failed to play audio:\n%o', err);
+    if (signal.aborted) {
+      return console.info('Play audio error after abort:', err);
+    }
 
-    errorTextEl.textContent = 'Failed to play audio: ';
-    errorTextEl.textContent += err instanceof Error ? err.message : String(err);
-    errorSnackbarEl.hidden = false;
-    ui(`#${errorSnackbarEl.id}`);
+    console.error('Failed to play audio:\n%o', err);
+    showErrorSnackbar(err);
   } finally {
     playAudioBtn.disabled = false;
     audioContainer.classList.remove('loading');
   }
 });
 
+let downloadBlobURL: string | undefined;
 downloadAudioBtn.addEventListener('click', async (ev) => {
   ev.preventDefault();
 
   if (!blobPromise) return;
+  if (downloadBlobURL) URL.revokeObjectURL(downloadBlobURL);
+
   const blob = await blobPromise;
-  const blobURL = URL.createObjectURL(blob);
+  downloadBlobURL = URL.createObjectURL(blob);
 
   const a = document.createElement('a');
-  a.href = blobURL;
+  a.href = downloadBlobURL;
   a.download = 'generated-speech.webm';
   a.click();
-
-  // prevent holding blob in memory forever
-  setTimeout(() => {
-    URL.revokeObjectURL(blobURL);
-  }, 1000);
 });
 
 // workaround for cases where reloading the page does not actually apply the disabled tag again
