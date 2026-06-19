@@ -1,4 +1,5 @@
 import { client } from '../utils/client.ts';
+import { makeAsyncIterable } from '../utils/makeAsyncIterator.ts';
 
 const toreadTextarea = document.getElementById('toread-textarea')! as HTMLTextAreaElement;
 const voiceSelect = document.getElementById('voice-select')! as HTMLSelectElement;
@@ -7,6 +8,19 @@ const downloadAudioBtn = document.getElementById('download-audio-btn')! as HTMLB
 const audioContainer = document.getElementById('audioContainer')!;
 
 let audioEl: HTMLAudioElement | undefined;
+
+// see: https://bitmovin.com/blog/managed-media-source/#migration-from-mse-to-mms-ed4921d7-725c-4010-b3d0-d32af2f44964
+function getMediaSource() {
+  if ('MediaSource' in window as unknown) {
+    return new window.MediaSource();
+  } else if ('ManagedMediaSource' in window) {
+    // since safari 17 as a replacement for the not implemented MediaSource, see https://caniuse.com/wf-managed-media-source
+    return new (window as { ManagedMediaSource: typeof window['MediaSource'] })
+      .ManagedMediaSource();
+  }
+
+  throw new Error('No MediaSource API available');
+}
 
 playAudioBtn.addEventListener('click', async (ev) => {
   ev.preventDefault();
@@ -52,12 +66,14 @@ playAudioBtn.addEventListener('click', async (ev) => {
     const codec = res.headers.get('Content-Type')!;
 
     console.log('Creating media source for res.body, type %s', codec);
-    const mediaSource = new MediaSource(); // DOES NOT work on mobile safari (no ios, only ipados)
+    const mediaSource = getMediaSource();
     const url = URL.createObjectURL(mediaSource);
 
     if (!audioEl) {
       audioEl = document.createElement('audio');
       audioEl.setAttribute('controls', '');
+      // required for ManagedMediaSource, see https://developer.mozilla.org/en-US/docs/Web/API/ManagedMediaSource#examples
+      audioEl.disableRemotePlayback = true;
       audioContainer.appendChild(audioEl);
     }
 
@@ -71,8 +87,8 @@ playAudioBtn.addEventListener('click', async (ev) => {
 
       const sourceBuffer = mediaSource.addSourceBuffer(codec);
       audioEl!.play();
-      for await (const chunk of stream) {
-        sourceBuffer.appendBuffer(chunk);
+      for await (const chunk of makeAsyncIterable(stream)) {
+        sourceBuffer.appendBuffer(chunk as BufferSource);
         await new Promise(
           (resolve) => sourceBuffer.addEventListener('updateend', resolve, { once: true }),
         );
