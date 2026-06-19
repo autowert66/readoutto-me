@@ -49,6 +49,7 @@ playAudioBtn.addEventListener('click', async (ev) => {
   }
 
   playAudioBtn.disabled = true;
+  downloadAudioBtn.disabled = true;
   audioContainer.classList.add('loading');
 
   try {
