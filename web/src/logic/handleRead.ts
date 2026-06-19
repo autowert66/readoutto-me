@@ -44,8 +44,16 @@ playAudioBtn.addEventListener('click', async (ev) => {
       },
     });
 
-    const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
+    if (res.status < 200 || res.status >= 300) {
+      throw new Error('Non-ok status code');
+    }
+
+    const stream = res.body!;
+    const codec = res.headers.get('Content-Type')!;
+
+    console.log('Creating media source for res.body, type %s', codec);
+    const mediaSource = new MediaSource(); // DOES NOT work on mobile safari (no ios, only ipados)
+    const url = URL.createObjectURL(mediaSource);
 
     if (!audioEl) {
       audioEl = document.createElement('audio');
@@ -53,11 +61,25 @@ playAudioBtn.addEventListener('click', async (ev) => {
       audioContainer.appendChild(audioEl);
     }
 
+    // clean up the old MediaSource
     if (audioEl.src) URL.revokeObjectURL(audioEl.src);
     audioEl.src = url;
-    downloadAudioBtn.disabled = false;
+    // downloadAudioBtn.disabled = false;
 
-    audioEl.play();
+    mediaSource.addEventListener('sourceopen', async () => {
+      console.log('source is open');
+
+      const sourceBuffer = mediaSource.addSourceBuffer(codec);
+      audioEl!.play();
+      for await (const chunk of stream) {
+        sourceBuffer.appendBuffer(chunk);
+        await new Promise(
+          (resolve) => sourceBuffer.addEventListener('updateend', resolve, { once: true }),
+        );
+      }
+
+      mediaSource.endOfStream();
+    }, { once: true });
   } finally {
     playAudioBtn.disabled = false;
     audioContainer.classList.remove('loading');
@@ -66,6 +88,7 @@ playAudioBtn.addEventListener('click', async (ev) => {
 
 downloadAudioBtn.addEventListener('click', (ev) => {
   ev.preventDefault();
+  // not supported right now
 
   const url = audioEl?.src;
   if (!url) return;
