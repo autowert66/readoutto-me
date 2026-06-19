@@ -11,6 +11,7 @@ const errorTextEl = document.getElementById('error-text')!;
 
 let audioEl: HTMLAudioElement | undefined;
 let blobPromise: Promise<Blob> | undefined;
+let playAbortController: AbortController | undefined;
 
 // see: https://bitmovin.com/blog/managed-media-source/#migration-from-mse-to-mms-ed4921d7-725c-4010-b3d0-d32af2f44964
 function getMediaSource() {
@@ -50,6 +51,11 @@ playAudioBtn.addEventListener('click', async (ev) => {
     return;
   }
 
+  // AbortController to cancel requests, streaming and playback on regeneration
+  if (playAbortController) playAbortController.abort();
+  playAbortController = new AbortController();
+  const { signal } = playAbortController;
+
   playAudioBtn.disabled = true;
   downloadAudioBtn.disabled = true;
   audioContainer.classList.add('loading');
@@ -60,7 +66,7 @@ playAudioBtn.addEventListener('click', async (ev) => {
         text: value,
         voice: voice,
       },
-    });
+    }, { init: { signal } });
 
     if (res.status < 200 || res.status >= 300) {
       throw new Error('Non-ok status code');
@@ -76,15 +82,6 @@ playAudioBtn.addEventListener('click', async (ev) => {
       throw new Error(`Browser / MediaSource does not support codec ${codec}.`);
     }
 
-    const url = URL.createObjectURL(mediaSource);
-
-    const [stream, downloadStream] = res.body!.tee();
-    blobPromise = new Response(downloadStream, {
-      headers: {
-        'Content-Type': codec,
-      },
-    }).blob();
-
     if (!audioEl) {
       audioEl = document.createElement('audio');
       audioEl.setAttribute('controls', '');
@@ -93,10 +90,21 @@ playAudioBtn.addEventListener('click', async (ev) => {
       audioContainer.appendChild(audioEl);
     }
 
-    // clean up the old MediaSource
-    if (audioEl.src) URL.revokeObjectURL(audioEl.src);
+    const url = URL.createObjectURL(mediaSource);
     audioEl.src = url;
+    signal.addEventListener('abort', () => {
+      URL.revokeObjectURL(url);
+    }, { once: true });
 
+    // ReadableStream can only be consumed once, so .tee it for the two purposes: playback and download
+    const [stream, downloadStream] = res.body!.tee();
+    blobPromise = new Response(downloadStream, {
+      headers: {
+        'Content-Type': codec,
+      },
+    }).blob();
+
+    // creating the source buffer requires waiting for the sourceopen event
     mediaSource.addEventListener('sourceopen', async () => {
       console.log('MediaSource: source is open');
 
@@ -104,16 +112,17 @@ playAudioBtn.addEventListener('click', async (ev) => {
       audioEl!.play().catch(() => {});
 
       for await (const chunk of makeAsyncIterable(stream)) {
+        if (signal.aborted) break;
         sourceBuffer.appendBuffer(chunk as BufferSource);
         await new Promise(
-          (resolve) => sourceBuffer.addEventListener('updateend', resolve, { once: true }),
+          (resolve) => sourceBuffer.addEventListener('updateend', resolve, { once: true, signal }),
         );
       }
 
       console.log('MediaSource loop: End of audio stream');
       mediaSource.endOfStream();
-      downloadAudioBtn.disabled = false;
-    }, { once: true });
+      if (!signal.aborted) downloadAudioBtn.disabled = false;
+    }, { once: true, signal });
   } catch (err) {
     console.error('Failed to play audio:\n%o', err);
 
