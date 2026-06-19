@@ -1,5 +1,5 @@
 import { client } from '../utils/client.ts';
-import { makeAsyncIterable } from '../utils/makeAsyncIterator.ts';
+import { makeAsyncIterable } from '../utils/makeAsyncIterable.ts';
 
 const toreadTextarea = document.getElementById('toread-textarea')! as HTMLTextAreaElement;
 const voiceSelect = document.getElementById('voice-select')! as HTMLSelectElement;
@@ -101,7 +101,7 @@ playAudioBtn.addEventListener('click', async (ev) => {
       console.log('MediaSource: source is open');
 
       const sourceBuffer = mediaSource.addSourceBuffer(codec);
-      audioEl!.play();
+      audioEl!.play().catch(() => {});
 
       for await (const chunk of makeAsyncIterable(stream)) {
         sourceBuffer.appendBuffer(chunk as BufferSource);
