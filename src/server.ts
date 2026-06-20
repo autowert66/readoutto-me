@@ -1,3 +1,4 @@
+import './utils/globalUncaughtErrors.ts';
 import { app } from './app.ts';
 
 Deno.serve({
