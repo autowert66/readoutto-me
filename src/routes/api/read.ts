@@ -7,6 +7,7 @@ import xmlEscape from 'xml-escape';
 
 import { isVoiceValid } from '../../utils/isVoiceValid.ts';
 import { ErrorResponse } from '../../utils/ErrorResponse.ts';
+import { TTSResponse } from '../../utils/TTSResponse.ts';
 
 const schema = z.object({
   text: z.string().min(1),
@@ -28,7 +29,7 @@ async function handleReadRequest(voice: string, text: string) {
   // the msedge-tts package uses node.js streams, so convert them to native web streams first
   const webStream = Readable.toWeb(audioStream) as unknown as ReadableStream;
 
-  return new Response(webStream, {
+  return new TTSResponse(webStream, {
     headers: {
       // Stream is opus encoded webm file, tell that to the browser to play it correctly
       'Content-Type': 'audio/webm; codecs=opus',

@@ -3,6 +3,7 @@ import { Hono } from 'hono';
 import { MsEdgeTTS, OUTPUT_FORMAT } from 'msedge-tts';
 
 import { getVoices } from '../../utils/getVoices.ts';
+import { TTSResponse } from '../../utils/TTSResponse.ts';
 
 const helloWorldRoute = new Hono().get('/helloworld.webm', async () => {
   const tts = new MsEdgeTTS();
@@ -20,7 +21,7 @@ const helloWorldRoute = new Hono().get('/helloworld.webm', async () => {
   // the msedge-tts package uses node.js streams, so convert them to native web streams first
   const webStream = Readable.toWeb(audioStream) as unknown as ReadableStream;
 
-  return new Response(webStream, {
+  return new TTSResponse(webStream, {
     headers: {
       // Stream is opus encoded webm file, tell that to the browser to play it correctly
       'Content-Type': 'audio/webm; codecs=opus',
