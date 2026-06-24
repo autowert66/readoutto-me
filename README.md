@@ -1,4 +1,4 @@
-# <a href="https://readoutto.me/"><picture><source srcset="/public/logo-dark.png" media="(prefers-color-scheme: dark)"><img height="66" src="/public/logo.png" alt="ReadOutTo.me"></picture></a>
+# <a href="https://readoutto.me/" target="_blank"><picture><source srcset="/public/logo-dark.png" media="(prefers-color-scheme: dark)"><img height="66" src="/public/logo.png" alt="ReadOutTo.me"></picture></a>
 
 Read out text online.
 
