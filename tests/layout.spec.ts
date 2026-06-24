@@ -1,21 +1,19 @@
 import { expect, test } from '@playwright/test';
 
-test('has title', async ({ page }) => {
+test.beforeEach(async ({ page }) => {
   await page.goto('/');
+});
 
+test('has title', async ({ page }) => {
   await expect(page).toHaveTitle(/ReadOutTo/);
 });
 
 test('has header with h1', async ({ page }) => {
-  await page.goto('/');
-
   await expect(page.locator('header')).toBeVisible();
   await expect(page.locator('h1')).toContainText(/Read.*Out.*To/);
 });
 
 test('has github link', async ({ page }) => {
-  await page.goto('/');
-
   const githubLink = page.getByText('github');
 
   await expect(githubLink).toBeVisible();

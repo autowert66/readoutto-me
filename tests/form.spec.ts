@@ -1,8 +1,11 @@
 import { expect, test } from '@playwright/test';
 
-test('has textarea, options and action buttons', async ({ page }) => {
+test.beforeEach(async ({ page }) => {
+  if (test.info().title.includes('(nogoto)')) return;
   await page.goto('/');
+});
 
+test('has textarea, options and action buttons', async ({ page }) => {
   await expect(page.locator('textarea')).toBeVisible();
   await expect(page.locator('#lang-select')).toBeVisible();
   await expect(page.locator('#voice-select')).toBeVisible();
@@ -12,15 +15,11 @@ test('has textarea, options and action buttons', async ({ page }) => {
 });
 
 test('play button is enabled, download button is disabled', async ({ page }) => {
-  await page.goto('/');
-
   await expect(page.locator('#play-audio-btn')).toBeEnabled();
   await expect(page.locator('#download-audio-btn')).toBeDisabled();
 });
 
 test('empty textarea and generating displays error, but no error before that', async ({ page }) => {
-  await page.goto('/');
-
   const playBtn = page.locator('#play-audio-btn');
 
   await expect(page.locator('output.invalid')).not.toBeVisible();
@@ -32,13 +31,11 @@ test('empty textarea and generating displays error, but no error before that', a
 });
 
 test('language and voice have an initial value', async ({ page }) => {
-  await page.goto('/');
-
   await expect(page.locator('#lang-select')).toHaveValue(/.+/);
   await expect(page.locator('#voice-select')).toHaveValue(/.+/);
 });
 
-test('language and voice have an initial value before the loading of the voices', async ({ page }) => {
+test('language and voice have an initial value before the loading of the voices (nogoto)', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
 
   const langSelect = page.locator('#lang-select');
@@ -49,8 +46,6 @@ test('language and voice have an initial value before the loading of the voices'
 });
 
 test('select inputs have multiple options', async ({ page }) => {
-  await page.goto('/');
-
   const langSelect = page.locator('#lang-select');
   const voiceSelect = page.locator('#voice-select');
 
@@ -62,8 +57,6 @@ test('select inputs have multiple options', async ({ page }) => {
 });
 
 test('changing language updates voices', async ({ page }) => {
-  await page.goto('/');
-
   const langSelect = page.locator('#lang-select');
   const voiceSelect = page.locator('#voice-select');
 
