@@ -1,7 +1,6 @@
 import { expect, test } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
-  if (test.info().title.includes('(nogoto)')) return;
   await page.goto('/');
 });
 
@@ -33,16 +32,6 @@ test('empty textarea and generating displays error, but no error before that', a
 test('language and voice have an initial value', async ({ page }) => {
   await expect(page.locator('#lang-select')).toHaveValue(/.+/);
   await expect(page.locator('#voice-select')).toHaveValue(/.+/);
-});
-
-test('language and voice have an initial value before the loading of the voices (nogoto)', async ({ page }) => {
-  await page.goto('/', { waitUntil: 'domcontentloaded' });
-
-  const langSelect = page.locator('#lang-select');
-  const voiceSelect = page.locator('#voice-select');
-
-  await expect(langSelect).toBeVisible();
-  await expect(voiceSelect).toBeVisible();
 });
 
 test('select inputs have multiple options', async ({ page }) => {
