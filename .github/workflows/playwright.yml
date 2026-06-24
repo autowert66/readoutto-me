@@ -10,16 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
-        with:
-          node-version: lts/*
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x # Run with latest stable Deno.
       - name: Install dependencies
         run: deno ci
       - name: Install Playwright Browsers
-        run: dx playwright install --with-deps
+        run: deno x -A playwright install --with-deps
       - name: Run Playwright tests
         run: deno task test:web
       - uses: actions/upload-artifact@v4
