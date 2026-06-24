@@ -21,7 +21,7 @@ test('play button is enabled, download button is disabled', async ({ page }) => 
 test('empty textarea and generating displays error, but no error before that', async ({ page }) => {
   await page.goto('/');
 
-  const playBtn = await page.locator('#play-audio-btn');
+  const playBtn = page.locator('#play-audio-btn');
 
   await expect(page.locator('output.invalid')).not.toBeVisible();
 
@@ -41,18 +41,18 @@ test('language and voice have an initial value', async ({ page }) => {
 test('language and voice have an initial value before the loading of the voices', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
 
-  const langSelect = await page.locator('#lang-select');
-  const voiceSelect = await page.locator('#voice-select');
+  const langSelect = page.locator('#lang-select');
+  const voiceSelect = page.locator('#voice-select');
 
-  await expect(langSelect).toBeTruthy();
-  await expect(voiceSelect).toBeTruthy();
+  await expect(langSelect).toBeVisible();
+  await expect(voiceSelect).toBeVisible();
 });
 
 test('select inputs have multiple options', async ({ page }) => {
   await page.goto('/');
 
-  const langSelect = await page.locator('#lang-select');
-  const voiceSelect = await page.locator('#voice-select');
+  const langSelect = page.locator('#lang-select');
+  const voiceSelect = page.locator('#voice-select');
 
   const langOptionCount = await langSelect.locator('option').count();
   const voiceOptionCount = await voiceSelect.locator('option').count();
@@ -64,21 +64,18 @@ test('select inputs have multiple options', async ({ page }) => {
 test('changing language updates voices', async ({ page }) => {
   await page.goto('/');
 
-  const langSelect = await page.locator('#lang-select');
-  const voiceSelect = await page.locator('#voice-select');
+  const langSelect = page.locator('#lang-select');
+  const voiceSelect = page.locator('#voice-select');
+
+  await expect(langSelect).toHaveValue(/.+/);
+  await expect(voiceSelect).toHaveValue(/.+/);
 
   const initialLang = await langSelect.inputValue();
   const initialVoice = await voiceSelect.inputValue();
-
-  await expect(initialLang).toBeTruthy();
-  await expect(initialVoice).toBeTruthy();
-
   const newLang = initialLang === 'en-US' ? 'de-DE' : 'en-US';
 
   await langSelect.selectOption(newLang);
 
-  const newVoice = await voiceSelect.inputValue();
-
-  await expect(newVoice).toBeTruthy();
-  await expect(newVoice).not.toBe(initialVoice);
+  await expect(voiceSelect).not.toHaveValue(initialVoice);
+  await expect(voiceSelect).toHaveValue(/.+/);
 });
