@@ -1,6 +1,17 @@
-# <a href="https://readoutto.me/"><picture><source srcset="/public/logo-dark.png" media="(prefers-color-scheme: dark)"><img height="58" src="/public/logo.png" alt="ReadOutTo.me"></picture></a>
+# <a href="https://readoutto.me/"><picture><source srcset="/public/logo-dark.png" media="(prefers-color-scheme: dark)"><img height="66" src="/public/logo.png" alt="ReadOutTo.me"></picture></a>
 
-Web Application for accessible text to speech online.
+Read out text online.
+
+## TL;DR
+
+Live page is available at [readoutto.me](https://readoutto.me/). Run locally like this:
+
+```bash
+git clone https://github.com/autowert66/readoutto-me.git && cd readoutto-me
+docker compose up --build # http://localhost:8023/
+# or for development
+deno install && deno task dev # http://localhost:8080/
+```
 
 ## Run the application
 
