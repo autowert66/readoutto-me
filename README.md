@@ -1,4 +1,4 @@
-# Read Out To (.) me
+# <a href="https://readoutto.me/"><picture><source srcset="/public/logo-dark.png" media="(prefers-color-scheme: dark)"><img height="58" src="/public/logo.png" alt="ReadOutTo.me"></picture></a>
 
 Web Application for accessible text to speech online.
 
