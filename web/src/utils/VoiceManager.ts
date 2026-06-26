@@ -51,11 +51,24 @@ export class VoiceManager {
   }
 
   setLastLanguage(lang: string) {
-    localStorage.setItem('lastLang', lang);
+    try {
+      localStorage.setItem('lastLang', lang);
+    } catch (err) {
+      console.log('localStorage access failed:', err);
+    }
   }
 
   getInitialLanguage() {
-    return localStorage.getItem('lastLang') || this.getUserLang();
+    let lang;
+
+    try {
+      lang = localStorage.getItem('lastLang');
+    } catch (err) {
+      console.log('localStorage access failed:', err);
+    }
+
+    lang ||= this.getUserLang();
+    return lang;
   }
 
   private getUserLang() {
