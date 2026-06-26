@@ -26,6 +26,25 @@ function getMediaSource() {
   throw new Error('No MediaSource API available');
 }
 
+const MAX_TEXT_LENGTH = 18_000;
+
+function showValidationError(element: HTMLTextAreaElement, message: string) {
+  const parent = element.parentElement!;
+  if (parent.querySelector('output')) return;
+
+  const output = document.createElement('output');
+  output.textContent = message;
+  parent.appendChild(output);
+
+  parent.classList.add('invalid');
+  output.classList.add('invalid');
+
+  element.addEventListener('input', () => {
+    parent.classList.remove('invalid');
+    output.remove();
+  }, { once: true });
+}
+
 playAudioBtn.addEventListener('click', async (ev) => {
   ev.preventDefault();
 
@@ -33,21 +52,15 @@ playAudioBtn.addEventListener('click', async (ev) => {
   const voice = voiceSelect.value;
 
   if (!value) {
-    const parent = toreadTextarea.parentElement!;
-    if (parent.querySelector('output')) return;
+    showValidationError(toreadTextarea, 'Text to read is required');
+    return;
+  }
 
-    const output = document.createElement('output');
-    output.textContent = 'Text to read is required';
-    parent.appendChild(output);
-
-    parent.classList.add('invalid');
-    output.classList.add('invalid');
-
-    toreadTextarea.addEventListener('change', () => {
-      parent.classList.remove('invalid');
-      output.remove();
-    }, { once: true });
-
+  if (value.length > MAX_TEXT_LENGTH) {
+    showValidationError(
+      toreadTextarea,
+      `Text exceeds maximum length of ${MAX_TEXT_LENGTH.toLocaleString()} characters`,
+    );
     return;
   }
 

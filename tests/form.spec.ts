@@ -29,6 +29,18 @@ test('empty textarea and generating displays error, but no error before that', a
   await expect(page.locator('output.invalid')).toContainText('required');
 });
 
+test('very long text displays max length error', async ({ page }) => {
+  const textarea = page.locator('textarea');
+  const playBtn = page.locator('#play-audio-btn');
+  const veryLongText = 'a '.repeat(15_000);
+
+  await textarea.fill(veryLongText);
+  await playBtn.click();
+
+  await expect(page.locator('output.invalid')).toBeVisible();
+  await expect(page.locator('output.invalid')).toContainText('maximum length');
+});
+
 test('language and voice have an initial value', async ({ page }) => {
   await expect(page.locator('#lang-select')).toHaveValue(/.+/);
   await expect(page.locator('#voice-select')).toHaveValue(/.+/);
