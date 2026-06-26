@@ -1,34 +1,25 @@
 import { getVoices } from '../utils/getVoices.ts';
 import { createOption } from '../utils/createOption.ts';
-import { ApiVoice } from '../../../src/routes/api/voices.ts';
+import { VoiceManager } from '../utils/VoiceManager.ts';
 
 const langSelect = document.getElementById('lang-select')! as HTMLSelectElement;
 const voiceSelect = document.getElementById('voice-select')! as HTMLSelectElement;
 
 getVoices().then((voices) => {
-  const languagesSet = new Set<string>(
-    voices.map((voice) => voice.Locale),
-  );
+  const voiceManager = new VoiceManager(voices);
 
-  const languageDisplayNames = new Intl.DisplayNames(['en'], { type: 'language' });
   langSelect.replaceChildren();
-  for (const lang of languagesSet) {
-    const option = createOption(lang, languageDisplayNames.of(lang) || lang);
+  for (const lang of voiceManager.getLanguages()) {
+    const option = createOption(
+      lang,
+      VoiceManager.getLanguageDisplayName(lang),
+    );
     langSelect.appendChild(option);
-  }
-
-  const voiceMap = new Map<string, ApiVoice[]>();
-  for (const voice of voices) {
-    const { Locale } = voice;
-    if (!voiceMap.has(Locale)) {
-      voiceMap.set(Locale, []);
-    }
-    voiceMap.get(Locale)!.push(voice);
   }
 
   function handleLangChange() {
     const lang = langSelect.value;
-    const voices = voiceMap.get(lang);
+    const voices = voiceManager.getVoicesByLanguage(lang);
     if (!voices) return;
 
     voiceSelect.replaceChildren();
