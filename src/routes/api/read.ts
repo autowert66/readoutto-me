@@ -9,8 +9,16 @@ import { isVoiceValid } from '../../utils/isVoiceValid.ts';
 import { ErrorResponse } from '../../utils/ErrorResponse.ts';
 import { TTSResponse } from '../../utils/TTSResponse.ts';
 
+const MAX_TEXT_LENGTH = 18_000;
+
 const schema = z.object({
-  text: z.string().min(1),
+  text: z
+    .string()
+    .min(1)
+    .max(
+      MAX_TEXT_LENGTH,
+      `text exceeds maximum length of ${MAX_TEXT_LENGTH.toLocaleString()} characters`,
+    ),
   voice: z.string().min(1),
 });
 
