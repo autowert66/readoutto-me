@@ -22,6 +22,8 @@ getVoices().then((voices) => {
     const voices = voiceManager.getVoicesByLanguage(lang);
     if (!voices) return;
 
+    voiceManager.setLastLanguage(lang);
+
     voiceSelect.replaceChildren();
 
     const femaleVoices = document.createElement('optgroup');
@@ -49,6 +51,6 @@ getVoices().then((voices) => {
     handleLangChange();
   });
 
-  langSelect.value = navigator.language;
+  langSelect.value = voiceManager.getInitialLanguage();
   langSelect.dispatchEvent(new Event('change'));
 });
