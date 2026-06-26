@@ -127,6 +127,7 @@ h1 {
 
 #toread-textarea {
   min-height: 35svh;
+  scrollbar-color: var(--outline) #fff4;
 }
 
 fieldset {
@@ -207,6 +208,12 @@ fieldset {
 
 .site-footer a:hover {
   opacity: 0.6;
+}
+
+body.dark {
+  #toread-textarea {
+    scrollbar-color: var(--outline) #fff1;
+  }
 }
 
 @media screen and (min-width: 768px) {
