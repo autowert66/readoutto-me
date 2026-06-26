@@ -9,7 +9,7 @@
     "start": "deno run --no-prompt --allow-net --allow-read=dist --allow-read=data --allow-write=data --allow-env src/server.ts",
     "dev": "concurrently \"deno task dev:client\" \"deno task dev:server\"",
     "dev:server": "deno run --watch --allow-net --allow-read=dist --allow-read=data --allow-write=data --allow-env src/server.ts",
-    "dev:client": "vite build --watch",
+    "dev:client": "vite build --watch --sourcemap inline --minify false",
     "build": "vite build",
     "verify": "deno fmt --check && deno lint && deno check",
     "test": "deno task test:web",
