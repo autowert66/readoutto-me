@@ -20,7 +20,7 @@ getVoices().then((voices) => {
   function handleLangChange() {
     const lang = langSelect.value;
     const voices = voiceManager.getVoicesByLanguage(lang);
-    if (!voices) return;
+    if (!voices || !voices.length) return;
 
     voiceManager.setLastLanguage(lang);
 
