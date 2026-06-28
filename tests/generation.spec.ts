@@ -16,7 +16,8 @@ async function testGenerationResults({ page }: { page: Page }) {
   await expect(audioEl).toHaveAttribute('src', /.+/);
 
   const downloadBtn = page.getByRole('button', { name: 'Download' });
-  await expect(downloadBtn).not.toBeDisabled();
+  // extended timeout as the download button only becomes enabled once the full audio is generated / downloaded
+  await expect(downloadBtn).not.toBeDisabled({ timeout: 20_000 });
 
   const downloadPromise = page.waitForEvent('download');
   await downloadBtn.click();
