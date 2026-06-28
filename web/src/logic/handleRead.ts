@@ -144,6 +144,8 @@ playAudioBtn.addEventListener('click', async (ev) => {
         console.log('MediaSource loop: End of audio stream');
         mediaSource.endOfStream();
       } catch (err) {
+        stream.cancel().catch(() => {});
+
         if (signal.aborted) {
           return console.info('Sourceopen error after abort:', err);
         }
