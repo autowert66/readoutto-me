@@ -9,14 +9,23 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x # Run with latest stable Deno.
+          cache: true
       - name: Install dependencies
         run: deno ci
+      - uses: actions/cache@v6
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('deno.lock', 'playwright.config.ts') }}
       - name: Install Playwright Browsers
-        run: deno x -A playwright install --with-deps
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: deno x -A playwright install
+      - name: Install Playwright OS Dependencies
+        run: deno x -A playwright install-deps
       - name: Run Playwright tests
         run: deno task test:web
       - uses: actions/upload-artifact@v4
