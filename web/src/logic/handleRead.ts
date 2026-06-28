@@ -117,6 +117,11 @@ playAudioBtn.addEventListener('click', async (ev) => {
       },
     }).blob();
 
+    blobPromise.then(() => {
+      if (signal.aborted) return;
+      downloadAudioBtn.disabled = false;
+    }).catch(() => {});
+
     // creating the source buffer requires waiting for the sourceopen event
     mediaSource.addEventListener('sourceopen', async () => {
       try {
@@ -138,7 +143,6 @@ playAudioBtn.addEventListener('click', async (ev) => {
 
         console.log('MediaSource loop: End of audio stream');
         mediaSource.endOfStream();
-        if (!signal.aborted) downloadAudioBtn.disabled = false;
       } catch (err) {
         if (signal.aborted) {
           return console.info('Sourceopen error after abort:', err);
