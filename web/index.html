@@ -44,23 +44,23 @@
     <!-- inline main app layout style, in case loading styles.css fails -->
     <!-- happened to me while in public transit, so that makes the app usable even then -->
     <style>
-      body {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
     </style>
   </head>
 
   <body>
     <header>
       <h1>
-        Read<span class="subtle" data-text="·" aria-hidden="true"></span>Out<span
+      Read<span class="subtle" data-text="·" aria-hidden="true"></span>Out<span
           class="subtle"
           data-text="·"
           aria-hidden="true"
         ></span>To<span class="subtle selectable" aria-label="dot">.</span>me
-      </h1>
+    </h1>
       <p>Read text out online</p>
     </header>
 
@@ -70,6 +70,19 @@
         <textarea id="toread-textarea" rows="10"></textarea>
         <label for="toread-textarea">Text to read</label>
       </div>
+      <nav id="textarea-actions" class="group connected">
+        <div style="flex: 1"></div>
+
+        <button id="upload-btn" class="fill small left-round">
+          <i>attach_file</i>
+          <span>Upload</span>
+        </button>
+
+        <button id="paste-btn" class="fill small right-round">
+          <i>content_paste</i>
+          <span>Paste</span>
+        </button>
+      </nav>
 
       <fieldset>
         <legend>
@@ -113,11 +126,11 @@
 
     <footer class="site-footer">
       <span>
-        Licensed under WTFPL&nbsp;·&nbsp;
+      Licensed under WTFPL&nbsp;·&nbsp;
         <a href="https://github.com/autowert66/readoutto-me" target="_blank" rel="noopener"
         >GitHub</a>&nbsp;·&nbsp;
-        <a href="https://status.readoutto.me" target="_blank" rel="noopener">Status</a>
-      </span>
+      <a href="https://status.readoutto.me" target="_blank" rel="noopener">Status</a>
+    </span>
     </footer>
   </body>
 </html>
