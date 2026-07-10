@@ -1,4 +1,4 @@
-import { client } from '../utils/client.ts';
+import { client } from '../shared/client.ts';
 import { makeAsyncIterable } from '../utils/makeAsyncIterable.ts';
 import { formatErrorMessage, showSnackbar } from '../utils/showSnackbar.ts';
 

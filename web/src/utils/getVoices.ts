@@ -1,4 +1,4 @@
-import { client } from './client.ts';
+import { client } from '../shared/client.ts';
 import type { ApiVoice } from '../../../src/routes/api/voices.ts';
 
 let _voices: ApiVoice[] | null = null;
