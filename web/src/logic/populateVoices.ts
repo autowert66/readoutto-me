@@ -1,13 +1,11 @@
-import { getVoices } from '../utils/getVoices.ts';
+import { voiceManagerPromise } from '../shared/voiceManager.ts';
 import { createOption } from '../utils/createOption.ts';
 import { VoiceManager } from '../utils/VoiceManager.ts';
 
 const langSelect = document.getElementById('lang-select')! as HTMLSelectElement;
 const voiceSelect = document.getElementById('voice-select')! as HTMLSelectElement;
 
-getVoices().then((voices) => {
-  const voiceManager = new VoiceManager(voices);
-
+voiceManagerPromise.then((voiceManager) => {
   langSelect.replaceChildren();
   for (const lang of voiceManager.getLanguages()) {
     const option = createOption(
