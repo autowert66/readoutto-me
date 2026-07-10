@@ -1,6 +1,6 @@
 import { client } from '../utils/client.ts';
 import { makeAsyncIterable } from '../utils/makeAsyncIterable.ts';
-import { showErrorSnackbar } from '../utils/showErrorSnackbar.ts';
+import { formatErrorMessage, showSnackbar } from '../utils/showSnackbar.ts';
 
 const toreadTextarea = document.getElementById('toread-textarea')! as HTMLTextAreaElement;
 const voiceSelect = document.getElementById('voice-select')! as HTMLSelectElement;
@@ -151,7 +151,7 @@ playAudioBtn.addEventListener('click', async (ev) => {
         }
 
         console.error('Error in sourceopen MediaStream handler:\n%o', err);
-        showErrorSnackbar(err);
+        showSnackbar(formatErrorMessage('Failed to play audio', err), 'error');
       }
     }, { once: true, signal });
   } catch (err) {
@@ -160,7 +160,7 @@ playAudioBtn.addEventListener('click', async (ev) => {
     }
 
     console.error('Failed to play audio:\n%o', err);
-    showErrorSnackbar(err);
+    showSnackbar(formatErrorMessage('Failed to play audio', err), 'error');
   } finally {
     playAudioBtn.disabled = false;
     audioContainer.classList.remove('loading');
