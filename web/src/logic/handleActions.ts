@@ -82,12 +82,13 @@ async function handleURL(contentURL: URL | string) {
   try {
     textareaContainer.classList.add('loading');
     textareaContainer.setAttribute('aria-busy', 'true');
+    toreadTextarea.disabled = true;
 
     const url = `https://cf.markdown.download/?url=${encodeURIComponent(contentURL.toString())}`;
     const res = await fetch(url, {
-      headers: {
-        'Accept': 'text/markdown',
-      },
+      headers: { 'Accept': 'text/markdown' },
+      // time out after 8s, e.g. when the website does not respond and then markdown.download can't respond either
+      signal: AbortSignal.timeout(8_000),
     });
     if (res.status < 200 || res.status >= 300) {
       throw new Error('Non-successful status code obtaining text.');
@@ -108,6 +109,7 @@ async function handleURL(contentURL: URL | string) {
   } finally {
     textareaContainer.classList.remove('loading');
     textareaContainer.removeAttribute('aria-busy');
+    toreadTextarea.disabled = false;
   }
 }
 
