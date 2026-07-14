@@ -70,7 +70,9 @@ async function detectLanguage() {
   try {
     // dynamically import the eld (efficient language detector) package, only when needed. Keep loaded for subsequent use
     eldPromise ||= import('eld/extrasmall').then((module) => module.eld);
-    const timeoutPromise: Promise<never> = new Promise((_, reject) => setTimeout(reject, 2_500));
+    const timeoutPromise: Promise<never> = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('Language detection timeout')), 2_500);
+    });
 
     // wait for eldPromise and voiceManagerPromise, or time out after timeoutPromise rejects
     const [eld, voiceManager] = await Promise.race([
