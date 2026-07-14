@@ -105,6 +105,14 @@ async function detectLanguage() {
       btn.addEventListener('click', handleSuggestedChipClick);
       suggestedLangs.appendChild(btn);
     }
+
+    const dismissBtn = document.createElement('button');
+    const dismissIcon = document.createElement('i');
+    dismissBtn.classList.add('chip', 'round', 'transparent', 'dismiss-suggestions-btn');
+    dismissIcon.textContent = 'close';
+    dismissBtn.appendChild(dismissIcon);
+    dismissBtn.addEventListener('click', handleDismissSuggestionsClick);
+    suggestedLangs.appendChild(dismissBtn);
   } catch (err) {
     // Failure to detect the language is not an issue, it can be silently ignored (-> no language detection shows up)
     console.warn('Language detection failed with Error:', err);
@@ -123,4 +131,10 @@ function handleSuggestedChipClick(ev: PointerEvent) {
   // update the selected language
   langSelect.value = lang!;
   langSelect.dispatchEvent(new Event('change'));
+}
+
+function handleDismissSuggestionsClick(ev: PointerEvent) {
+  ev.preventDefault();
+  suggestedLangs.replaceChildren();
+  suggestedLangs.removeAttribute('data-detection');
 }

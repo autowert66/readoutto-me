@@ -159,6 +159,10 @@ fieldset {
   display: none;
 }
 
+#suggested-langs .dismiss-suggestions-btn {
+  margin-left: auto;
+}
+
 #primary-action-container {
   display: flex;
   flex-direction: row;
