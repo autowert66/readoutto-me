@@ -27,6 +27,7 @@
     "eld": "^2.0.3",
     "hono": "^4.12.18",
     "msedge-tts": "^2.0.5",
+    "remove-markdown": "^0.6.4",
     "xml-escape": "^1.1.0",
     "zod": "^4.4.3"
   },

@@ -1,3 +1,5 @@
+import removeMarkdown from 'remove-markdown';
+
 import { client } from '../shared/client.ts';
 import { makeAsyncIterable } from '../utils/makeAsyncIterable.ts';
 import { formatErrorMessage, showSnackbar } from '../utils/showSnackbar.ts';
@@ -73,10 +75,13 @@ playAudioBtn.addEventListener('click', async (ev) => {
   downloadAudioBtn.disabled = true;
   audioContainer.classList.add('loading');
 
+  // strip markdown, e.g. when pasting chatbot responses or reading text fetched from markdown.download
+  const textToRead = removeMarkdown(value);
+
   try {
     const res = await client.api.read.$post({
       json: {
-        text: value,
+        text: textToRead,
         voice: voice,
       },
     }, { init: { signal } });
