@@ -65,6 +65,10 @@ function handleTextareaUpdate() {
   setTimeout(() => {
     try {
       const contentURL = new URL(toreadTextarea.value.trim());
+      if (!/^http/.test(contentURL.protocol)) {
+        throw new Error('Not a web URL');
+      }
+
       handleURL(contentURL);
     } catch {
       // pasted content is not a url
