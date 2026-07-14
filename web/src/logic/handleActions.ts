@@ -3,6 +3,7 @@ import { formatErrorMessage, showSnackbar } from '../utils/showSnackbar.ts';
 import { VoiceManager } from '../utils/VoiceManager.ts';
 
 const toreadTextarea = document.getElementById('toread-textarea')! as HTMLTextAreaElement;
+const textareaContainer = document.getElementById('textarea-container')!;
 const suggestedLangs = document.getElementById('suggested-langs')!;
 const uploadBtn = document.getElementById('upload-btn')!;
 const pasteBtn = document.getElementById('paste-btn')!;
@@ -36,7 +37,7 @@ uploadBtn.addEventListener('click', (ev) => {
       }
 
       toreadTextarea.value = text;
-      handlePaste();
+      handleTextareaUpdate();
     } catch (err) {
       showSnackbar(formatErrorMessage('Failed to upload text', err), 'error');
     }
@@ -51,17 +52,68 @@ pasteBtn.addEventListener('click', async (ev) => {
     // and https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/readText
     const clip = await navigator.clipboard.readText();
     toreadTextarea.value = clip;
-    handlePaste();
+    handleTextareaUpdate();
   } catch {
     showSnackbar('Failed to read Clipboard', 'default');
   }
 });
 
-toreadTextarea.addEventListener('paste', handlePaste);
+toreadTextarea.addEventListener('paste', handleTextareaUpdate);
 /** On paste (either event or detected), trigger the language detection */
-function handlePaste() {
+function handleTextareaUpdate() {
   // paste happens before .value is updated, defer handling
-  setTimeout(detectLanguage, 0);
+  setTimeout(() => {
+    try {
+      const contentURL = new URL(toreadTextarea.value.trim());
+      handleURL(contentURL);
+    } catch {
+      // pasted content is not a url
+      detectLanguage();
+    }
+  }, 0);
+}
+
+/** Handle pasted url to obtain text content from the url and detect language after */
+async function handleURL(contentURL: URL | string) {
+  try {
+    textareaContainer.classList.add('loading');
+    textareaContainer.setAttribute('aria-busy', 'true');
+
+    const url = `https://cf.markdown.download/?url=${encodeURIComponent(contentURL.toString())}`;
+    const res = await fetch(url, {
+      headers: {
+        'Accept': 'text/markdown',
+      },
+    });
+    if (res.status < 200 || res.status >= 300) {
+      throw new Error('Non-successful status code obtaining text.');
+    }
+
+    const text = await res.text();
+    console.log('Obtained article text:\n%s', text);
+
+    const processedText = preprocessMarkdownDownload(text);
+    if (!processedText) {
+      throw new Error('Website not supported.');
+    }
+
+    toreadTextarea.value = processedText;
+    detectLanguage();
+  } catch (err) {
+    showSnackbar(formatErrorMessage('Failed to obtain text from URL', err), 'error');
+  } finally {
+    textareaContainer.classList.remove('loading');
+    textareaContainer.removeAttribute('aria-busy');
+  }
+}
+
+/** Preprocess content from markdown.download specifically (regular markdown cleanup is applied before reading) */
+function preprocessMarkdownDownload(content: string) {
+  // remove original article url at the end
+  content = content.replace(/https?:\S+\s*$/, '');
+  // trim content
+  content = content.trim();
+  return content;
 }
 
 let eldPromise: Promise<typeof import('eld/extrasmall')['eld']> | undefined;
