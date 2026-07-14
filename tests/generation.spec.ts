@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }) => {
 async function testGenerationResults({ page }: { page: Page }) {
   await page.getByRole('button', { name: 'Play Audio' }).click();
 
-  const loadingIndicator = page.locator('.loading-indicator');
+  const loadingIndicator = page.locator('#audioContainer .loading-indicator');
   await expect(loadingIndicator).toBeVisible();
   await expect(loadingIndicator).toBeHidden();
 

@@ -130,6 +130,51 @@ h1 {
   scrollbar-color: var(--outline) #fff4;
 }
 
+#textarea-container.loading {
+  background: linear-gradient(
+    90deg,
+    var(--surface-container) 25%,
+    var(--surface-container-highest) 50%,
+    var(--surface-container) 75%
+  );
+
+  background-size: 200% 100%;
+  animation: shimmer-load 2s infinite linear;
+
+  color: var(--on-surface-variant);
+}
+
+@keyframes shimmer-load {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+#textarea-loading {
+  position: absolute;
+  inset: 0;
+  /* display: grid; // display remains unset, so that the html "hidden" attribute works and the element does not flash before loading of the stlyes */
+  place-items: center;
+
+  pointer-events: none;
+  z-index: 2;
+}
+
+#textarea-container.loading #textarea-loading {
+  display: grid;
+}
+
+.spinner-surface {
+  background: var(--secondary-container);
+  inline-size: 3.5rem;
+  block-size: 3.5rem;
+  padding: 0;
+  border-radius: 50%;
+}
+
 fieldset {
   min-width: 0;
 }

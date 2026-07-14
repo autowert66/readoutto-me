@@ -65,10 +65,16 @@
     </header>
 
     <main class="responsive">
-      <div class="field label border">
+      <div id="textarea-container" class="field label border">
         <!-- rows attribute is set to disable automatic resizing, see https://github.com/beercss/beercss/blob/main/docs/TEXTAREA.md -->
         <textarea id="toread-textarea" rows="10"></textarea>
         <label for="toread-textarea">Text to read</label>
+        <div id="textarea-loading" aria-hidden="true" hidden>
+          <!-- from example: <button class="circle extra fill"> as container, but does not work with <div> -->
+          <div class="spinner-surface">
+            <span class="shape loading-indicator max medium-space"></span>
+          </div>
+        </div>
       </div>
       <nav id="textarea-actions" class="group connected">
         <nav id="suggested-langs" class="group connected"></nav>
