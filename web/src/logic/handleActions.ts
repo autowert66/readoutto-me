@@ -105,7 +105,11 @@ async function handleURL(contentURL: URL | string) {
     toreadTextarea.value = processedText;
     detectLanguage();
   } catch (err) {
-    showSnackbar(formatErrorMessage('Failed to obtain text from URL', err), 'error');
+    let reason = err;
+    if (/AbortError|TimeoutError/.test((err as Error)?.name)) {
+      reason = new Error('Operation timed out');
+    }
+    showSnackbar(formatErrorMessage('Failed to obtain text from URL', reason), 'error');
   } finally {
     textareaContainer.classList.remove('loading');
     textareaContainer.removeAttribute('aria-busy');
