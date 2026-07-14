@@ -87,6 +87,9 @@ async function detectLanguage() {
     const languages = voiceManager.getVoicesByLanguagePrefix(language);
     if (!languages.length) return;
 
+    const selectedLang = langSelect.value;
+    if (selectedLang.startsWith(language)) return;
+
     suggestedLangs.replaceChildren();
     for (const lang of languages) {
       const btn = document.createElement('button');
