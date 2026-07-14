@@ -84,15 +84,19 @@ async function detectLanguage() {
     const detection = eld.detect(value);
     const { language } = detection;
 
-    if (!detection.isReliable()) return;
+    const lastDetection = suggestedLangs.getAttribute('data-detection') || '';
+    if (lastDetection === language) return;
+
+    suggestedLangs.replaceChildren();
+    suggestedLangs.removeAttribute('data-detection');
+
+    const selectedLang = langSelect.value;
+    if (!detection.isReliable() || selectedLang.startsWith(language)) return;
 
     const languages = voiceManager.getVoicesByLanguagePrefix(language);
     if (!languages.length) return;
 
-    const selectedLang = langSelect.value;
-    if (selectedLang.startsWith(language)) return;
-
-    suggestedLangs.replaceChildren();
+    suggestedLangs.setAttribute('data-detection', language);
     for (const lang of languages) {
       const btn = document.createElement('button');
       btn.classList.add('chip', 'transparent');
