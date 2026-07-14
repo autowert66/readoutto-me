@@ -7,6 +7,7 @@
     "npm:@types/xml-escape@^1.1.3": "1.1.3",
     "npm:beercss@^4.0.21": "4.0.21",
     "npm:concurrently@^10.0.3": "10.0.3",
+    "npm:eld@^2.0.3": "2.0.3",
     "npm:hono@^4.12.18": "4.12.18",
     "npm:msedge-tts@^2.0.5": "2.0.5",
     "npm:playwright@^1.61.0": "1.61.0",
@@ -326,6 +327,9 @@
         "es-errors",
         "gopd"
       ]
+    },
+    "eld@2.0.3": {
+      "integrity": "sha512-KiwFrycPPJ2XgKb7MGsJ3m3grUFXq6+55R8ZuS9fj+Qv0WRFgeEBhmorHO/YwHV9VqhdJURKFGJ+CY24sEikOw=="
     },
     "emoji-regex@10.6.0": {
       "integrity": "sha512-toUI84YS5YmxW219erniWD0CIVOo46xGKColeNQRgOzDorgBi1v4D71/OFzgD9GO2UGKIv1C3Sp8DAn0+j5w7A=="
@@ -761,6 +765,7 @@
         "npm:@types/xml-escape@^1.1.3",
         "npm:beercss@^4.0.21",
         "npm:concurrently@^10.0.3",
+        "npm:eld@^2.0.3",
         "npm:hono@^4.12.18",
         "npm:msedge-tts@^2.0.5",
         "npm:playwright@^1.61.0",

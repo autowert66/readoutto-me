@@ -140,6 +140,25 @@ fieldset {
   overflow: hidden;
 }
 
+/* only on small screens (where horizontal space is limited), hide the button's text (icon remains visible) */
+@media screen and (max-width: 768px) {
+  #textarea-actions:has(#suggested-langs > button) > button > span {
+    display: none;
+  }
+}
+
+/* hide scrollbar while allowing scroll, see https://stackoverflow.com/a/38994837 */
+#suggested-langs {
+  position: relative;
+  flex: 1;
+  overflow-x: scroll;
+  scrollbar-width: none;
+}
+
+#suggested-langs::-webkit-scrollbar {
+  display: none;
+}
+
 #primary-action-container {
   display: flex;
   flex-direction: row;
