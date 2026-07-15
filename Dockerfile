@@ -17,6 +17,7 @@ RUN deno task build
 FROM base
 
 ENV NODE_ENV=production
+ENV PORT=8080
 
 RUN deno install --frozen
 
@@ -26,6 +27,6 @@ COPY --from=builder /app/dist dist
 
 RUN mkdir data
 
-EXPOSE 8080
+EXPOSE $PORT
 
 CMD ["deno", "task", "start"]

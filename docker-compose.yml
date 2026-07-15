@@ -4,8 +4,10 @@ services:
     build: .
     volumes:
       - data:/app/data
+    environment:
+      - PORT=8023
     ports:
-      - '127.0.0.1:8023:8080'
+      - '127.0.0.1:8023:8023'
     restart: unless-stopped
 
 volumes:
