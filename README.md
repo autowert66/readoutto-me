@@ -41,11 +41,13 @@ deno install && deno task dev # http://localhost:8080/
 Install Deno by following the
 [official instructions](https://docs.deno.com/runtime/getting_started/installation/).
 
-Execute in the project folder:
+Clone the repository and in the project folder initialize and start the application:
 
 ```bash
+git clone https://github.com/autowert66/readoutto-me.git && cd readoutto-me
+
 deno install
-deno task start
+PORT=8080 deno task dev
 ```
 
 The application will be running on [localhost:8080](http://localhost:8080/)
