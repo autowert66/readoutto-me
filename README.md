@@ -51,3 +51,29 @@ PORT=8080 deno task dev
 ```
 
 The application will be running on [localhost:8080](http://localhost:8080/)
+
+## Contributing
+
+Pull requests are welcome!
+
+The project enforces formatted and linted code through Deno. The changes can be checked manually
+using:
+
+```bash
+deno task verify # checks formatting, linting and type safety
+```
+
+Additionally, a pre-commit git hook verifies changes automatically before committing them.
+
+Code can be formatted automatically using:
+
+```bash
+deno fmt
+```
+
+Comprehensive web tests run on pull request creation on GitHub Actions, but can also be run manually
+using:
+
+```bash
+deno task test
+```
