@@ -128,6 +128,8 @@ h1 {
 #toread-textarea {
   min-height: 35svh;
   scrollbar-color: var(--outline) #fff4;
+
+  overflow-wrap: break-word;
 }
 
 #textarea-container.loading {
