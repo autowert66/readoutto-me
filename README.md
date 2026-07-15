@@ -8,7 +8,9 @@
 [![Built with Love](https://img.shields.io/badge/Built_With-Love-red.svg?style=for-the-badge)](https://gist.githubusercontent.com/autowert66/5339a9feba12bb73408d20fd06d2833d/raw/love.txt)
 [![Better Stack Uptime](https://img.shields.io/endpoint?url=https%3A%2F%2Frtome-badge.autowert66.workers.dev%2F%3Fid%3D2qbl1&style=for-the-badge)](https://status.readoutto.me)
 
-Read out text online.
+Read out any text online. Paste, select language, generate. That's it.
+
+See the [full list of features](#features).
 
 ## TL;DR
 
@@ -22,6 +24,16 @@ deno install && deno task dev # http://localhost:8080/
 ```
 
 ## Features
+
+- Support for 142 different languages and regions
+- Multiple voices per language, among female and male speakers
+- Paste or upload any text or markdown
+- Extract text from blog posts or articles by pasting the link
+- Streaming responses for incredibly low Time To First Audio
+- Download generated speech for offline playback, use in content creation...
+- Automatic language detection suggests likely languages of the text before read
+- Modern webm + opus audio codec for high audible quality at low bitrates
+- Simple API, easy to integrate into other applications or with coding agents
 
 ## Run the application
 
