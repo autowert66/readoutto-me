@@ -25,15 +25,15 @@ deno install && deno task dev # http://localhost:8080/
 
 ## Features
 
-- Support for 142 different languages and regions
-- Multiple voices per language, among female and male speakers
-- Paste or upload any text or markdown
-- Extract text from blog posts or articles by pasting the link
-- Streaming responses for incredibly low Time To First Audio
-- Download generated speech for offline playback, use in content creation...
-- Automatic language detection suggests likely languages of the text before read
-- Modern webm + opus audio codec for high audible quality at low bitrates
-- Simple API, easy to integrate into other applications or with coding agents
+- 🌐 Support for 142 different languages and regions
+- 🗣️ Multiple voices per language, among female and male speakers
+- 📝 Paste or upload any text or markdown
+- 🔗 Extract text from blog posts or articles by pasting the link
+- 〰️ Streaming responses for incredibly low Time To First Audio
+- ⬇️ Download generated speech for offline playback, use in content creation...
+- 🧠 Automatic language detection suggests likely languages of the text before read
+- ⚙️ Modern webm + opus audio codec for high audible quality at low bitrates
+- 🧱 Simple API, easy to integrate into other applications or with coding agents
 
 ## Run the application
 
