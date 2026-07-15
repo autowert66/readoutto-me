@@ -130,6 +130,8 @@ h1 {
   scrollbar-color: var(--outline) #fff4;
 
   overflow-wrap: break-word;
+  /* properly render \n characters as newlines in the textarea (needed when overwriting .value on Safari) */
+  white-space: pre-wrap;
 }
 
 #textarea-container.loading {
