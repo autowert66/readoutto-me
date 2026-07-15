@@ -25,6 +25,7 @@ deno install && deno task dev # http://localhost:8080/
 
 ## Features
 
+- ✳️ High quality, natural sounding voices backed by Azure Speech
 - 🌐 Support for 142 different languages and regions
 - 🗣️ Multiple voices per language, among female and male speakers
 - 📝 Paste or upload any text or markdown
