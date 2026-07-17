@@ -119,11 +119,11 @@ async function handleURL(contentURL: URL | string) {
   }
 }
 
-/** Preprocess content from markdown.download specifically (regular markdown cleanup is applied before reading) */
+/** Preprocess content from markdown.download: cleanup original url at the end and strip markdown */
 function preprocessMarkdownDownload(content: string) {
   // remove original article url at the end
   content = content.replace(/https?:\S+\s*$/, '');
-  // trim content
+  content = removeMarkdown(content);
   content = content.trim();
   return content;
 }
