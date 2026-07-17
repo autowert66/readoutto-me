@@ -1,3 +1,5 @@
+import removeMarkdown from 'remove-markdown';
+
 import { voiceManagerPromise } from '../shared/voiceManager.ts';
 import { formatErrorMessage, showSnackbar } from '../utils/showSnackbar.ts';
 import { VoiceManager } from '../utils/VoiceManager.ts';
@@ -142,7 +144,8 @@ async function detectLanguage() {
       timeoutPromise,
     ]);
 
-    const value = toreadTextarea.value.trim();
+    // remove markdown before detecting the language, otherwise e.g. image urls can cause incorrect detection
+    const value = removeMarkdown(toreadTextarea.value).trim();
     const detection = eld.detect(value);
     const { language } = detection;
 
