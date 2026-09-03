@@ -43,6 +43,9 @@ body.light {
   --background: #f7e9d9; /* custom more sepia background */
 
   --audio-blur-filter: blur(3px);
+
+  /* override font to remove noto sans, which on some systems uses italic by default */
+  --font: Inter, Roboto, "Helvetica Neue", "Arial Nova", "Nimbus Sans", Arial, sans-serif;
 }
 
 body.dark {
